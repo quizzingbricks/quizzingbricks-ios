@@ -1,4 +1,6 @@
 quizzingbricks-ios
 ==================
 
-iOS (iPhone) client for the Quizzing Bricks game
+iOS (iPhone) client for the Quizzing Bricks game.
+
+It will be glorious.
