@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "QuizzingBricksAppDelegate.h"
+#import "QBAppDelegate.h"
 
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([QuizzingBricksAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([QBAppDelegate class]));
     }
 }

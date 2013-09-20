@@ -1,5 +1,5 @@
 //
-//  QuizzingBricksMasterViewController.h
+//  QBAppDelegate.h
 //  QuizzingBricks
 //
 //  Created by Linus Hedenberg on 2013-09-20.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QuizzingBricksMasterViewController : UITableViewController
+@interface QBAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
 
 @end

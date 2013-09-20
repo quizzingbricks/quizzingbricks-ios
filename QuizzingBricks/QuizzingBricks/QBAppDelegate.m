@@ -1,14 +1,14 @@
 //
-//  QuizzingBricksAppDelegate.m
+//  QBAppDelegate.m
 //  QuizzingBricks
 //
 //  Created by Linus Hedenberg on 2013-09-20.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QuizzingBricksAppDelegate.h"
+#import "QBAppDelegate.h"
 
-@implementation QuizzingBricksAppDelegate
+@implementation QBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
