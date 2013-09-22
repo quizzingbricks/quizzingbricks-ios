@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D43ED21217EF24800082BEFC /* QBCreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */; };
+		D43ED21517EF24A40082BEFC /* QBGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21417EF24A40082BEFC /* QBGamesViewController.m */; };
+		D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21717EF25A10082BEFC /* QBGameViewController.m */; };
 		D46CF49B17ECB333000BDD43 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49A17ECB333000BDD43 /* Foundation.framework */; };
 		D46CF49D17ECB333000BDD43 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49C17ECB333000BDD43 /* CoreGraphics.framework */; };
 		D46CF49F17ECB333000BDD43 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49E17ECB333000BDD43 /* UIKit.framework */; };
@@ -14,13 +17,14 @@
 		D46CF4A717ECB333000BDD43 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4A617ECB333000BDD43 /* main.m */; };
 		D46CF4AB17ECB333000BDD43 /* QBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4AA17ECB333000BDD43 /* QBAppDelegate.m */; };
 		D46CF4AE17ECB333000BDD43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4AC17ECB333000BDD43 /* Main.storyboard */; };
-		D46CF4B117ECB333000BDD43 /* QBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4B017ECB333000BDD43 /* QBViewController.m */; };
+		D46CF4B117ECB333000BDD43 /* QBLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4B017ECB333000BDD43 /* QBLoginViewController.m */; };
 		D46CF4B317ECB333000BDD43 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4B217ECB333000BDD43 /* Images.xcassets */; };
 		D46CF4BA17ECB334000BDD43 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF4B917ECB334000BDD43 /* XCTest.framework */; };
 		D46CF4BB17ECB334000BDD43 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49A17ECB333000BDD43 /* Foundation.framework */; };
 		D46CF4BC17ECB334000BDD43 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49E17ECB333000BDD43 /* UIKit.framework */; };
 		D46CF4C417ECB334000BDD43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4C217ECB334000BDD43 /* InfoPlist.strings */; };
 		D46CF4C617ECB334000BDD43 /* QuizzingBricksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */; };
+		D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D43ED21017EF24800082BEFC /* QBCreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCreateGameViewController.h; sourceTree = "<group>"; };
+		D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCreateGameViewController.m; sourceTree = "<group>"; };
+		D43ED21317EF24A40082BEFC /* QBGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBGamesViewController.h; sourceTree = "<group>"; };
+		D43ED21417EF24A40082BEFC /* QBGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBGamesViewController.m; sourceTree = "<group>"; };
+		D43ED21617EF25A10082BEFC /* QBGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBGameViewController.h; sourceTree = "<group>"; };
+		D43ED21717EF25A10082BEFC /* QBGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBGameViewController.m; sourceTree = "<group>"; };
 		D46CF49717ECB333000BDD43 /* QuizzingBricks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuizzingBricks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D46CF49A17ECB333000BDD43 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D46CF49C17ECB333000BDD43 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -45,14 +55,16 @@
 		D46CF4A917ECB333000BDD43 /* QBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QBAppDelegate.h; sourceTree = "<group>"; };
 		D46CF4AA17ECB333000BDD43 /* QBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBAppDelegate.m; sourceTree = "<group>"; };
 		D46CF4AD17ECB333000BDD43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D46CF4AF17ECB333000BDD43 /* QBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QBViewController.h; sourceTree = "<group>"; };
-		D46CF4B017ECB333000BDD43 /* QBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBViewController.m; sourceTree = "<group>"; };
+		D46CF4AF17ECB333000BDD43 /* QBLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QBLoginViewController.h; sourceTree = "<group>"; };
+		D46CF4B017ECB333000BDD43 /* QBLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBLoginViewController.m; sourceTree = "<group>"; };
 		D46CF4B217ECB333000BDD43 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D46CF4B817ECB334000BDD43 /* QuizzingBricksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuizzingBricksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D46CF4B917ECB334000BDD43 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D46CF4C117ECB334000BDD43 /* QuizzingBricksTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QuizzingBricksTests-Info.plist"; sourceTree = "<group>"; };
 		D46CF4C317ECB334000BDD43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuizzingBricksTests.m; sourceTree = "<group>"; };
+		D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBMenuViewController.h; sourceTree = "<group>"; };
+		D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBMenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,8 +127,16 @@
 				D46CF4A917ECB333000BDD43 /* QBAppDelegate.h */,
 				D46CF4AA17ECB333000BDD43 /* QBAppDelegate.m */,
 				D46CF4AC17ECB333000BDD43 /* Main.storyboard */,
-				D46CF4AF17ECB333000BDD43 /* QBViewController.h */,
-				D46CF4B017ECB333000BDD43 /* QBViewController.m */,
+				D46CF4AF17ECB333000BDD43 /* QBLoginViewController.h */,
+				D46CF4B017ECB333000BDD43 /* QBLoginViewController.m */,
+				D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */,
+				D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */,
+				D43ED21017EF24800082BEFC /* QBCreateGameViewController.h */,
+				D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */,
+				D43ED21317EF24A40082BEFC /* QBGamesViewController.h */,
+				D43ED21417EF24A40082BEFC /* QBGamesViewController.m */,
+				D43ED21617EF25A10082BEFC /* QBGameViewController.h */,
+				D43ED21717EF25A10082BEFC /* QBGameViewController.m */,
 				D46CF4B217ECB333000BDD43 /* Images.xcassets */,
 				D46CF4A117ECB333000BDD43 /* Supporting Files */,
 			);
@@ -250,9 +270,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D46CF4B117ECB333000BDD43 /* QBViewController.m in Sources */,
+				D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */,
+				D43ED21517EF24A40082BEFC /* QBGamesViewController.m in Sources */,
+				D46CF4B117ECB333000BDD43 /* QBLoginViewController.m in Sources */,
+				D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */,
 				D46CF4A717ECB333000BDD43 /* main.m in Sources */,
 				D46CF4AB17ECB333000BDD43 /* QBAppDelegate.m in Sources */,
+				D43ED21217EF24800082BEFC /* QBCreateGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +485,7 @@
 				D46CF4CB17ECB334000BDD43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D46CF4CC17ECB334000BDD43 /* Build configuration list for PBXNativeTarget "QuizzingBricksTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +494,7 @@
 				D46CF4CE17ECB334000BDD43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

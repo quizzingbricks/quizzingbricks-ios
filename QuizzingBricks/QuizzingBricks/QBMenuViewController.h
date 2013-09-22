@@ -1,5 +1,5 @@
 //
-//  QBViewController.h
+//  QBMenuViewController.h
 //  QuizzingBricks
 //
 //  Created by Linus Hedenberg on 2013-09-20.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QBViewController : UIViewController
+@interface QBMenuViewController : UITableViewController
+
+- (IBAction)cancel:(UIStoryboardSegue *)segue;
 
 @end

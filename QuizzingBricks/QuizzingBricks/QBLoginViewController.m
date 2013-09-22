@@ -1,18 +1,19 @@
 //
-//  QBViewController.m
+//  QBLoginViewController.m
 //  QuizzingBricks
 //
 //  Created by Linus Hedenberg on 2013-09-20.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QBViewController.h"
+#import "QBLoginViewController.h"
+#import "QBMenuViewController.h"
 
-@interface QBViewController ()
+@interface QBLoginViewController ()
 
 @end
 
-@implementation QBViewController
+@implementation QBLoginViewController
 
 - (void)viewDidLoad
 {
@@ -24,6 +25,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)logout:(UIStoryboardSegue *)segue
+{
+    if ([[segue identifier] isEqualToString:@"LogOut"]) {
+        [self dismissViewControllerAnimated: YES completion:NULL];
+    }
 }
 
 @end
