@@ -7,6 +7,7 @@
 //
 
 #import "QBGameViewController.h"
+#import "QBBoardView.h"
 
 @interface QBGameViewController ()
 
@@ -26,7 +27,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    QBBoardView *gameView = [[QBBoardView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x+10, self.view.bounds.origin.y+100, self.view.bounds.size.width+150, self.view.bounds.size.height)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [scrollView setContentSize:CGSizeMake(self.view.bounds.size.width+150, self.view.bounds.size.height)];
+    [scrollView addSubview:gameView];
+    [self.view addSubview:scrollView];
+    [self.view setNeedsDisplay];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning

@@ -25,6 +25,14 @@
 		D46CF4C417ECB334000BDD43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4C217ECB334000BDD43 /* InfoPlist.strings */; };
 		D46CF4C617ECB334000BDD43 /* QuizzingBricksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */; };
 		D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */; };
+		D4E62CE718034651002F0CDA /* QBBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E62CE618034651002F0CDA /* QBBoardView.m */; };
+		D4E62CEA18034679002F0CDA /* QBCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E62CE918034679002F0CDA /* QBCellView.m */; };
+		D4E62CF21803475E002F0CDA /* BoardCellBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CEC1803475E002F0CDA /* BoardCellBlue.png */; };
+		D4E62CF31803475E002F0CDA /* BoardCellBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CED1803475E002F0CDA /* BoardCellBlue@2x.png */; };
+		D4E62CF41803475E002F0CDA /* BoardCellEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CEE1803475E002F0CDA /* BoardCellEmpty.png */; };
+		D4E62CF51803475E002F0CDA /* BoardCellEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CEF1803475E002F0CDA /* BoardCellEmpty@2x.png */; };
+		D4E62CF61803475E002F0CDA /* BoardCellGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CF01803475E002F0CDA /* BoardCellGreen.png */; };
+		D4E62CF71803475E002F0CDA /* BoardCellGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CF11803475E002F0CDA /* BoardCellGreen@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +73,16 @@
 		D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuizzingBricksTests.m; sourceTree = "<group>"; };
 		D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBMenuViewController.h; sourceTree = "<group>"; };
 		D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBMenuViewController.m; sourceTree = "<group>"; };
+		D4E62CE518034651002F0CDA /* QBBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBBoardView.h; sourceTree = "<group>"; };
+		D4E62CE618034651002F0CDA /* QBBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBBoardView.m; sourceTree = "<group>"; };
+		D4E62CE818034679002F0CDA /* QBCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCellView.h; sourceTree = "<group>"; };
+		D4E62CE918034679002F0CDA /* QBCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCellView.m; sourceTree = "<group>"; };
+		D4E62CEC1803475E002F0CDA /* BoardCellBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellBlue.png; sourceTree = "<group>"; };
+		D4E62CED1803475E002F0CDA /* BoardCellBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellBlue@2x.png"; sourceTree = "<group>"; };
+		D4E62CEE1803475E002F0CDA /* BoardCellEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellEmpty.png; sourceTree = "<group>"; };
+		D4E62CEF1803475E002F0CDA /* BoardCellEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellEmpty@2x.png"; sourceTree = "<group>"; };
+		D4E62CF01803475E002F0CDA /* BoardCellGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellGreen.png; sourceTree = "<group>"; };
+		D4E62CF11803475E002F0CDA /* BoardCellGreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellGreen@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +155,10 @@
 				D43ED21417EF24A40082BEFC /* QBGamesViewController.m */,
 				D43ED21617EF25A10082BEFC /* QBGameViewController.h */,
 				D43ED21717EF25A10082BEFC /* QBGameViewController.m */,
+				D4E62CE518034651002F0CDA /* QBBoardView.h */,
+				D4E62CE618034651002F0CDA /* QBBoardView.m */,
+				D4E62CE818034679002F0CDA /* QBCellView.h */,
+				D4E62CE918034679002F0CDA /* QBCellView.m */,
 				D46CF4B217ECB333000BDD43 /* Images.xcassets */,
 				D46CF4A117ECB333000BDD43 /* Supporting Files */,
 			);
@@ -146,6 +168,7 @@
 		D46CF4A117ECB333000BDD43 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D4E62CEB18034754002F0CDA /* Images */,
 				D46CF4A217ECB333000BDD43 /* QuizzingBricks-Info.plist */,
 				D46CF4A317ECB333000BDD43 /* InfoPlist.strings */,
 				D46CF4A617ECB333000BDD43 /* main.m */,
@@ -170,6 +193,19 @@
 				D46CF4C217ECB334000BDD43 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D4E62CEB18034754002F0CDA /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				D4E62CEC1803475E002F0CDA /* BoardCellBlue.png */,
+				D4E62CED1803475E002F0CDA /* BoardCellBlue@2x.png */,
+				D4E62CEE1803475E002F0CDA /* BoardCellEmpty.png */,
+				D4E62CEF1803475E002F0CDA /* BoardCellEmpty@2x.png */,
+				D4E62CF01803475E002F0CDA /* BoardCellGreen.png */,
+				D4E62CF11803475E002F0CDA /* BoardCellGreen@2x.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,9 +285,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E62CF41803475E002F0CDA /* BoardCellEmpty.png in Resources */,
+				D4E62CF21803475E002F0CDA /* BoardCellBlue.png in Resources */,
+				D4E62CF71803475E002F0CDA /* BoardCellGreen@2x.png in Resources */,
 				D46CF4B317ECB333000BDD43 /* Images.xcassets in Resources */,
 				D46CF4A517ECB333000BDD43 /* InfoPlist.strings in Resources */,
 				D46CF4AE17ECB333000BDD43 /* Main.storyboard in Resources */,
+				D4E62CF31803475E002F0CDA /* BoardCellBlue@2x.png in Resources */,
+				D4E62CF61803475E002F0CDA /* BoardCellGreen.png in Resources */,
+				D4E62CF51803475E002F0CDA /* BoardCellEmpty@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +317,9 @@
 				D46CF4B117ECB333000BDD43 /* QBLoginViewController.m in Sources */,
 				D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */,
 				D46CF4A717ECB333000BDD43 /* main.m in Sources */,
+				D4E62CEA18034679002F0CDA /* QBCellView.m in Sources */,
 				D46CF4AB17ECB333000BDD43 /* QBAppDelegate.m in Sources */,
+				D4E62CE718034651002F0CDA /* QBBoardView.m in Sources */,
 				D43ED21217EF24800082BEFC /* QBCreateGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

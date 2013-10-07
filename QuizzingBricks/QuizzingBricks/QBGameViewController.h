@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QBGameViewController : UIViewController
+@interface QBGameViewController : UIViewController //<UIScrollViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UILabel *headerLabel;
+//@property (weak, nonatomic) IBOutlet UIScrollView *gameScrollView;
 
 @end

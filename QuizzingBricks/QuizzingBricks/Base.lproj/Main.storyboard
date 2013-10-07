@@ -17,12 +17,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q9-of-3gr">
-                                <rect key="frame" x="137" y="269" width="43" height="30"/>
+                                <rect key="frame" x="139" y="269" width="43" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log In">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="loginButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Zss-Kd-POU"/>
                                     <segue destination="Rpq-p6-Wfz" kind="modal" modalTransitionStyle="flipHorizontal" id="Gi6-DT-1EM"/>
                                 </connections>
                             </button>
@@ -166,24 +167,23 @@
                         <viewControllerLayoutGuide type="top" id="yMm-cr-M72"/>
                         <viewControllerLayoutGuide type="bottom" id="TgT-LS-ceg"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zK5-ds-5BI">
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="zK5-ds-5BI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mighty Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rP8-eJ-4qj">
-                                <rect key="frame" x="111" y="111" width="99" height="21"/>
+                                <rect key="frame" x="111" y="74" width="99" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xqk-Vb-kp7">
-                                <rect key="frame" x="40" y="140" width="240" height="408"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="glj-7d-1PE"/>
+                    <connections>
+                        <outlet property="headerLabel" destination="rP8-eJ-4qj" id="BkJ-0A-YUr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="unI-7i-7Qj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
