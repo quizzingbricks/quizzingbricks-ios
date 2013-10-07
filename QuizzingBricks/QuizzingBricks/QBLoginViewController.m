@@ -19,6 +19,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    NSLog(@"viewDidLoad Login");
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,6 +33,9 @@
     if ([[segue identifier] isEqualToString:@"LogOut"]) {
         [self dismissViewControllerAnimated: YES completion:NULL];
     }
+}
+
+- (IBAction)loginButton:(id)sender {
 }
 
 @end
