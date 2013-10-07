@@ -11,5 +11,6 @@
 @interface QBLoginViewController : UIViewController
 
 - (IBAction)logout:(UIStoryboardSegue *)segue;
+- (IBAction)loginButton:(id)sender;
 
 @end
