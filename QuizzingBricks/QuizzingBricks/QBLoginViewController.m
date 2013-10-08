@@ -35,7 +35,17 @@
     }
 }
 
-- (IBAction)loginButton:(id)sender {
+- (IBAction)login:(id)sender {
+    NSLog(@"Username: %@, Password: %@", self.usernameInput.text, self.passwordInput.text);
+    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ((textField == self.usernameInput) || (textField == self.passwordInput)) {
+        [textField resignFirstResponder];
+    }
+    return YES;
 }
 
 @end
