@@ -25,6 +25,7 @@
 		D46CF4C417ECB334000BDD43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4C217ECB334000BDD43 /* InfoPlist.strings */; };
 		D46CF4C617ECB334000BDD43 /* QuizzingBricksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */; };
 		D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */; };
+		D4CD43781803F55700E4FEBF /* QBRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CD43771803F55700E4FEBF /* QBRegisterViewController.m */; };
 		D4E62CE718034651002F0CDA /* QBBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E62CE618034651002F0CDA /* QBBoardView.m */; };
 		D4E62CEA18034679002F0CDA /* QBCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E62CE918034679002F0CDA /* QBCellView.m */; };
 		D4E62CF21803475E002F0CDA /* BoardCellBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = D4E62CEC1803475E002F0CDA /* BoardCellBlue.png */; };
@@ -73,6 +74,8 @@
 		D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuizzingBricksTests.m; sourceTree = "<group>"; };
 		D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBMenuViewController.h; sourceTree = "<group>"; };
 		D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBMenuViewController.m; sourceTree = "<group>"; };
+		D4CD43761803F55700E4FEBF /* QBRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBRegisterViewController.h; sourceTree = "<group>"; };
+		D4CD43771803F55700E4FEBF /* QBRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBRegisterViewController.m; sourceTree = "<group>"; };
 		D4E62CE518034651002F0CDA /* QBBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBBoardView.h; sourceTree = "<group>"; };
 		D4E62CE618034651002F0CDA /* QBBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBBoardView.m; sourceTree = "<group>"; };
 		D4E62CE818034679002F0CDA /* QBCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCellView.h; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				D46CF4AC17ECB333000BDD43 /* Main.storyboard */,
 				D46CF4AF17ECB333000BDD43 /* QBLoginViewController.h */,
 				D46CF4B017ECB333000BDD43 /* QBLoginViewController.m */,
+				D4CD43761803F55700E4FEBF /* QBRegisterViewController.h */,
+				D4CD43771803F55700E4FEBF /* QBRegisterViewController.m */,
 				D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */,
 				D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */,
 				D43ED21017EF24800082BEFC /* QBCreateGameViewController.h */,
@@ -314,6 +319,7 @@
 			files = (
 				D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */,
 				D43ED21517EF24A40082BEFC /* QBGamesViewController.m in Sources */,
+				D4CD43781803F55700E4FEBF /* QBRegisterViewController.m in Sources */,
 				D46CF4B117ECB333000BDD43 /* QBLoginViewController.m in Sources */,
 				D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */,
 				D46CF4A717ECB333000BDD43 /* main.m in Sources */,
