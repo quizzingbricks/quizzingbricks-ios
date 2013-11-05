@@ -11,6 +11,8 @@
 
 @interface QBLoginViewController ()
 
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString;
+
 @end
 
 @implementation QBLoginViewController
@@ -36,13 +38,44 @@
 }
 
 - (IBAction)login:(id)sender {
-    NSLog(@"Username: %@, Password: %@", self.usernameInput.text, self.passwordInput.text);
-    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    //[self performSegueWithIdentifier:@"loginSegue" sender:self];
+    
+    if ([self NSStringIsValidEmail:[self.emailInput text]]) {
+        NSLog(@"Valid Mail");
+    } else {
+        NSLog(@"Invalid Mail");
+    }
+    
+    QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
+    qbc.delegate = self;
+    [qbc loginWithEmail:@"a@a.a" password:@"b"];
+}
+
+- (void)loginToken:(NSString *)token
+{
+    dispatch_sync(dispatch_get_main_queue(), ^{
+     [self performSegueWithIdentifier:@"loginSegue" sender:self];
+     });
+}
+
+- (void)loginFailed
+{
+    NSLog(@"login failed");
+}
+
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ((textField == self.usernameInput) || (textField == self.passwordInput)) {
+    if ((textField == self.emailInput) || (textField == self.passwordInput)) {
         [textField resignFirstResponder];
     }
     return YES;

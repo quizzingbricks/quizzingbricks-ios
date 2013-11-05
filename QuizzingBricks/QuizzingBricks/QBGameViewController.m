@@ -28,12 +28,25 @@
 {
     [super viewDidLoad];
     
-    QBBoardView *gameView = [[QBBoardView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x+10, self.view.bounds.origin.y+100, self.view.bounds.size.width+150, self.view.bounds.size.height)];
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
-    [scrollView setContentSize:CGSizeMake(self.view.bounds.size.width+150, self.view.bounds.size.height)];
+    NSInteger numberOfCells = 20;
+    NSInteger size = numberOfCells*50;
+    
+    QBBoardView *gameView = [[QBBoardView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x+10, self.view.bounds.origin.y+10, size, size)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y+100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
+    [scrollView setContentSize:CGSizeMake(size+20, size+20)];
     [scrollView addSubview:gameView];
+    scrollView.minimumZoomScale=0.3;
+    scrollView.maximumZoomScale=1.0;
     [self.view addSubview:scrollView];
     [self.view setNeedsDisplay];
+    [scrollView setDelegate:self];
+    [self setGameView:gameView];
+    
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return [self gameView];
 }
 
 - (void)viewWillAppear:(BOOL)animated

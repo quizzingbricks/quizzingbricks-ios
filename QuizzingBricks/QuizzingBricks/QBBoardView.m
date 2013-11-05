@@ -16,8 +16,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
+        for (int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
                 float x_cord = x*50;
                 float y_cord = y*50;
                 QBCellView *cell = [[QBCellView alloc] initWithFrame:CGRectMake(x_cord, y_cord, 50, 50) column:x row:y];
