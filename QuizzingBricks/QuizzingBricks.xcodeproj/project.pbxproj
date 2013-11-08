@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D400B026181E57CE00423568 /* QBFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D400B025181E57CE00423568 /* QBFriendsViewController.m */; };
 		D400B06E18213EAD00423568 /* QBDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D400B06D18213EAD00423568 /* QBDataManager.m */; };
+		D40C5C54182A44460082BA32 /* QBCreateGameSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */; };
 		D43ED21217EF24800082BEFC /* QBCreateGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */; };
 		D43ED21517EF24A40082BEFC /* QBGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21417EF24A40082BEFC /* QBGamesViewController.m */; };
 		D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21717EF25A10082BEFC /* QBGameViewController.m */; };
@@ -59,6 +60,8 @@
 		D400B025181E57CE00423568 /* QBFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBFriendsViewController.m; sourceTree = "<group>"; };
 		D400B06C18213EAD00423568 /* QBDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBDataManager.h; sourceTree = "<group>"; };
 		D400B06D18213EAD00423568 /* QBDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBDataManager.m; sourceTree = "<group>"; };
+		D40C5C52182A44460082BA32 /* QBCreateGameSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCreateGameSizeViewController.h; sourceTree = "<group>"; };
+		D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCreateGameSizeViewController.m; sourceTree = "<group>"; };
 		D43ED21017EF24800082BEFC /* QBCreateGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCreateGameViewController.h; sourceTree = "<group>"; };
 		D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCreateGameViewController.m; sourceTree = "<group>"; };
 		D43ED21317EF24A40082BEFC /* QBGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBGamesViewController.h; sourceTree = "<group>"; };
@@ -180,6 +183,8 @@
 				D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */,
 				D400B024181E57CE00423568 /* QBFriendsViewController.h */,
 				D400B025181E57CE00423568 /* QBFriendsViewController.m */,
+				D40C5C52182A44460082BA32 /* QBCreateGameSizeViewController.h */,
+				D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */,
 				D43ED21017EF24800082BEFC /* QBCreateGameViewController.h */,
 				D43ED21117EF24800082BEFC /* QBCreateGameViewController.m */,
 				D43ED21317EF24A40082BEFC /* QBGamesViewController.h */,
@@ -360,6 +365,7 @@
 				D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */,
 				D46CF4A717ECB333000BDD43 /* main.m in Sources */,
 				D4E62CEA18034679002F0CDA /* QBCellView.m in Sources */,
+				D40C5C54182A44460082BA32 /* QBCreateGameSizeViewController.m in Sources */,
 				D4D7F9D31828EE9200EFDADB /* QBCommunicationManager.m in Sources */,
 				D46CF4AB17ECB333000BDD43 /* QBAppDelegate.m in Sources */,
 				D4DBF8D31817C5ED00D9C01B /* QBQuestionViewController.m in Sources */,

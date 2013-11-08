@@ -12,12 +12,12 @@
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
-    
     NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", email, password];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", (int)[postData length]];
     
     NSURL *url = [[NSURL alloc] initWithString:@"http://192.168.2.6:5000/api/user/login/"];
+    //NSURL *url = [[NSURL alloc] initWithString:@"http://130.240.110.120:5000/api/user/login/"];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:url];

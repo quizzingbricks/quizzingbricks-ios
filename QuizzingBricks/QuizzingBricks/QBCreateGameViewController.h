@@ -10,4 +10,6 @@
 
 @interface QBCreateGameViewController : UITableViewController
 
+@property (nonatomic) NSInteger gameSize;
+
 @end

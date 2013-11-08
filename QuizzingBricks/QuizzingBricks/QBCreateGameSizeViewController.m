@@ -1,18 +1,19 @@
 //
-//  QBCreateGameViewController.m
+//  QBCreateGameSizeViewController.m
 //  QuizzingBricks
 //
-//  Created by Linus Hedenberg on 2013-09-22.
+//  Created by Linus Hedenberg on 2013-11-06.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
+#import "QBCreateGameSizeViewController.h"
 #import "QBCreateGameViewController.h"
 
-@interface QBCreateGameViewController ()
+@interface QBCreateGameSizeViewController ()
 
 @end
 
-@implementation QBCreateGameViewController
+@implementation QBCreateGameSizeViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,8 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSLog(@"viewDidLoad CreateGame");
+    NSLog(@"viewDidLoad Size");
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -48,63 +48,29 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
-
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0) {
-        //if owner of lobby
-        return 2;
-    }
-    else if (section == 1) {
-        return self.gameSize;
-    }
-    return 0;
+    return 2;
 }
-
-
+ 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            static NSString *CellIdentifier = @"addFriendCell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-            
-            // Configure the cell...
-            
-            return cell;
-        }
-        
-        static NSString *CellIdentifier = @"startCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-        // Configure the cell...
-        
-        return cell;
-    }
-    
-    static NSString *CellIdentifier = @"playerCell";
+    static NSString *CellIdentifier = @"GameSizeCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-
-    [cell.textLabel setText:@"Player"];
-    [cell.detailTextLabel setText:@"alice@gmail.com"];
+    if (indexPath.row == 0) {
+        [cell.textLabel setText:@"Two Players"];
+    } else {
+        [cell.textLabel setText:@"Four Players"];
+    }
     
     return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        return @"Players";
-    }
-    return @"";
 }
 
 /*
@@ -146,16 +112,25 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"what");
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if ([[segue identifier] isEqualToString:@"CreateGame"]) {
+        QBCreateGameViewController *createGameViewController = [segue destinationViewController];
+        if ([self.tableView indexPathForSelectedRow].row == 0) {
+            createGameViewController.gameSize = 2;
+        } else {
+            createGameViewController.gameSize = 4;
+        }
+    }
 }
 
- */
 
 @end

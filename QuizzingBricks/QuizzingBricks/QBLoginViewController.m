@@ -20,6 +20,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.loadingIndicator hidesWhenStopped];
+    [self.loadingIndicator stopAnimating];
 	// Do any additional setup after loading the view, typically from a nib.
     NSLog(@"viewDidLoad Login");
 }
@@ -39,11 +41,13 @@
 
 - (IBAction)login:(id)sender {
     //[self performSegueWithIdentifier:@"loginSegue" sender:self];
-    
+    [self.loadingIndicator startAnimating];
     if ([self NSStringIsValidEmail:[self.emailInput text]]) {
         NSLog(@"Valid Mail");
     } else {
         NSLog(@"Invalid Mail");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email" message:@"The email is not valid." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
     }
     
     QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
@@ -53,6 +57,7 @@
 
 - (void)loginToken:(NSString *)token
 {
+    [self.loadingIndicator stopAnimating];
     dispatch_sync(dispatch_get_main_queue(), ^{
      [self performSegueWithIdentifier:@"loginSegue" sender:self];
      });
@@ -60,6 +65,9 @@
 
 - (void)loginFailed
 {
+    [self.loadingIndicator stopAnimating];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Please try again.. biatch." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alert show];
     NSLog(@"login failed");
 }
 
