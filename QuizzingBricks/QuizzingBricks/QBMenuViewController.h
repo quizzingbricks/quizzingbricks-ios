@@ -11,5 +11,6 @@
 @interface QBMenuViewController : UITableViewController
 
 - (IBAction)cancel:(UIStoryboardSegue *)segue;
+- (IBAction)createLobby:(UIStoryboardSegue *)segue;
 
 @end

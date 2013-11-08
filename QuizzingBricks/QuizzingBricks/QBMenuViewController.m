@@ -7,6 +7,8 @@
 //
 
 #import "QBMenuViewController.h"
+#import "QBCreateGameViewController.h"
+#import "QBCreateGameSizeViewController.h"
 
 @interface QBMenuViewController ()
 
@@ -47,6 +49,21 @@
     if ([[segue identifier] isEqualToString:@"CancelCreate"]) {
         [self dismissViewControllerAnimated: YES completion:NULL];
         NSLog(@"cancelCreateDismiss");
+    }
+}
+
+- (IBAction)createLobby:(UIStoryboardSegue *)segue
+{
+    NSLog(@"createLobby");
+    if ([[segue identifier] isEqualToString:@"CreateLobby"]) {
+        NSLog(@"CrateLobby segue!");
+        QBCreateGameSizeViewController *sVC = [segue sourceViewController];
+        QBCreateGameViewController *createGameViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGameViewController"];
+        createGameViewController.gameSize = sVC.gameSize;
+        dispatch_async(dispatch_get_main_queue(),
+                       ^{
+                           [self.navigationController pushViewController:createGameViewController animated:YES];
+                       });
     }
 }
 

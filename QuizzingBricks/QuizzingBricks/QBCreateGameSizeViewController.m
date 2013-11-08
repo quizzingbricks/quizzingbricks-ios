@@ -119,6 +119,11 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"what");
+    if ([self.tableView indexPathForSelectedRow].row == 0) {
+        self.gameSize = 2;
+    } else {
+        self.gameSize = 4;
+    }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
@@ -131,6 +136,7 @@
         }
     }
 }
+
 
 
 @end
