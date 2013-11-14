@@ -7,8 +7,11 @@
 //
 
 #import "QBMenuViewController.h"
-#import "QBCreateGameViewController.h"
+#import "QBLobbyViewController.h"
 #import "QBCreateGameSizeViewController.h"
+#import "QBCommunicationManager.h"
+#import "QBDataManager.h"
+#import "QBLobby.h"
 
 @interface QBMenuViewController ()
 
@@ -58,13 +61,61 @@
     if ([[segue identifier] isEqualToString:@"CreateLobby"]) {
         NSLog(@"CrateLobby segue!");
         QBCreateGameSizeViewController *sVC = [segue sourceViewController];
-        QBCreateGameViewController *createGameViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGameViewController"];
-        createGameViewController.gameSize = sVC.gameSize;
-        dispatch_async(dispatch_get_main_queue(),
-                       ^{
-                           [self.navigationController pushViewController:createGameViewController animated:YES];
-                       });
+        
+        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+        cm.lobbyDelegate = self;
+        QBDataManager *dm = [QBDataManager sharedManager];
+        [cm createLobbyWithToken:dm.token size:(int)sVC.gameSize];
+        
     }
+}
+
+- (void)lobbies:(NSArray *) lobbyList
+{
+    for (int i = 0; i < [lobbyList count]; i++)
+    {
+        NSLog(@"l_id: %ld", [[lobbyList objectAtIndex:i] integerValue]);
+    }
+    NSLog(@"Menu: lobbies recieved");
+}
+
+- (void)getLobbiesFailed
+{
+    NSLog(@"Menu: lobbies failed");
+}
+
+- (void)createdLobby:(QBLobby *)l
+{
+    /*
+    NSLog(@"l_id: %ld", [l_id integerValue]);
+    QBCreateGameViewController *createGameViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGameViewController"];
+    createGameViewController.gameSize = [size intValue];
+    createGameViewController.lobbyID = [l_id stringValue];
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.navigationController pushViewController:createGameViewController animated:YES];
+                   });
+    */
+    
+    NSLog(@"Meny: createdLobby lobbySize:%ld",l.size);
+    QBLobbyViewController *lobbyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LobbyViewController"];
+    lobbyVC.lobby = l;
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.navigationController pushViewController:lobbyVC animated:YES];
+                   });
+}
+- (void)createLobbyFailed{
+    
+}
+
+- (void)lobby:(QBLobby *)l
+{
+    
+}
+- (void)getLobbyFailed
+{
+    
 }
 
 #pragma mark - Table view data source

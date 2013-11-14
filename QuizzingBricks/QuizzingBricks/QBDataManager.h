@@ -11,4 +11,6 @@
 @interface QBDataManager : NSObject
 + (QBDataManager *)sharedManager;
 
+@property (strong, nonatomic) NSString *token;
+
 @end

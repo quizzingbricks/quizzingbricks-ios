@@ -7,7 +7,6 @@
 //
 
 #import "QBCreateGameSizeViewController.h"
-#import "QBCreateGameViewController.h"
 
 @interface QBCreateGameSizeViewController ()
 
@@ -127,14 +126,14 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    if ([[segue identifier] isEqualToString:@"CreateGame"]) {
-        QBCreateGameViewController *createGameViewController = [segue destinationViewController];
-        if ([self.tableView indexPathForSelectedRow].row == 0) {
-            createGameViewController.gameSize = 2;
-        } else {
-            createGameViewController.gameSize = 4;
-        }
-    }
+    //if ([[segue identifier] isEqualToString:@"CreateGame"]) {
+    //    QBCreateGameViewController *createGameViewController = [segue destinationViewController];
+    //    if ([self.tableView indexPathForSelectedRow].row == 0) {
+    //        createGameViewController.gameSize = 2;
+    //    } else {
+    //        createGameViewController.gameSize = 4;
+    //    }
+    //}
 }
 
 

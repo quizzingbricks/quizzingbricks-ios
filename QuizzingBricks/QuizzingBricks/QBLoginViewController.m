@@ -8,6 +8,7 @@
 
 #import "QBLoginViewController.h"
 #import "QBMenuViewController.h"
+#import "QBDataManager.h"
 
 @interface QBLoginViewController ()
 
@@ -51,12 +52,23 @@
     }
     
     QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
-    qbc.delegate = self;
-    [qbc loginWithEmail:@"a@a.a" password:@"b"];
+    qbc.loginDelegate = self;
+    NSString *email = @"a@a.a";
+    NSString *password = @"b";
+    if (![self.emailInput.text isEqualToString:@""]) {
+        email = self.emailInput.text;
+    }
+    if (![self.passwordInput.text isEqualToString:@""]) {
+        password = self.passwordInput.text;
+    }
+    
+    [qbc loginWithEmail:email password:password];
 }
 
 - (void)loginToken:(NSString *)token
 {
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [dm setToken:token];
     [self.loadingIndicator stopAnimating];
     dispatch_sync(dispatch_get_main_queue(), ^{
      [self performSegueWithIdentifier:@"loginSegue" sender:self];

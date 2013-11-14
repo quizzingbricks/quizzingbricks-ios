@@ -1,24 +1,28 @@
 //
-//  QBCreateGameViewController.m
+//  QBLobbyViewController.m
 //  QuizzingBricks
 //
-//  Created by Linus Hedenberg on 2013-09-22.
+//  Created by Linus Hedenberg on 2013-11-12.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QBCreateGameViewController.h"
+#import "QBLobbyViewController.h"
 
-@interface QBCreateGameViewController ()
+#import "QBLobby.h"
+#import "QBPlayer.h"
+
+@interface QBLobbyViewController ()
 
 @end
 
-@implementation QBCreateGameViewController
+@implementation QBLobbyViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.lobby = nil;
     }
     return self;
 }
@@ -27,7 +31,7 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad CreateGame");
+    NSLog(@"LobbyView view did load size:%ld",self.lobby.size);
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -44,35 +48,27 @@
 
 #pragma mark - Table view data source
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     return 2;
 }
 
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
     if (section == 0) {
-        //if owner of lobby
+        //if owner of lobby only return 0..
         return 2;
     }
-    else if (section == 1) {
-        return self.gameSize;
-    }
-    return 0;
+    return [self.lobby.players count];
 }
-
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            static NSString *CellIdentifier = @"addFriendCell";
+            static NSString *CellIdentifier = @"AddFriendCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             
             // Configure the cell...
@@ -80,7 +76,7 @@
             return cell;
         }
         
-        static NSString *CellIdentifier = @"startCell";
+        static NSString *CellIdentifier = @"StartCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
         // Configure the cell...
@@ -88,13 +84,14 @@
         return cell;
     }
     
-    static NSString *CellIdentifier = @"playerCell";
+    static NSString *CellIdentifier = @"PlayerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-
-    [cell.textLabel setText:@"Player"];
-    [cell.detailTextLabel setText:@"alice@gmail.com"];
+    
+    QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
+    [cell.textLabel setText:player.userID];
+    [cell.detailTextLabel setText:player.email];
     
     return cell;
 }
@@ -106,6 +103,7 @@
     }
     return @"";
 }
+
 
 /*
 // Override to support conditional editing of the table view.

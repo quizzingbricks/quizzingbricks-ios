@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
 
-@interface QBMenuViewController : UITableViewController
+@interface QBMenuViewController : UITableViewController <QBLobbyComDelegate>
 
 - (IBAction)cancel:(UIStoryboardSegue *)segue;
 - (IBAction)createLobby:(UIStoryboardSegue *)segue;
