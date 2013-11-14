@@ -9,6 +9,7 @@
 #import "QBCommunicationManager.h"
 #import "QBLobby.h"
 #import "QBPlayer.h"
+#import "QBFriend.h"
 
 @implementation QBCommunicationManager
 
@@ -33,7 +34,7 @@
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
     NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", email, password];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/user/login/"];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/login/"];
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
             [self loginFailedWithError:error];
@@ -103,6 +104,45 @@
 - (void)getLobbyFailedWithError:(NSError *)error
 {
     [self.lobbyDelegate getLobbyFailed];
+}
+
+- (void)getFriendsWithToken:(NSString *)token
+{
+    NSLog(@"getFriends");
+    NSString *post = [NSString stringWithFormat:@"token=%@", token];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/me/friends/"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self getFriendsFailedWithError:error];
+        } else {
+            [self receivedFriendsJSON:data];
+        }
+    }];
+}
+
+- (void)receivedFriendsJSON:(NSData *)objectNotation
+{
+    NSLog(@"friendsReceived");
+    NSError *localError = nil;
+    NSArray *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+    if (localError != nil) {
+        [self getFriendsFailedWithError:localError];
+    } else {
+        NSMutableArray *friends = [[NSMutableArray alloc] init];
+        for (NSDictionary *friendJSON in parsedObject) {
+            
+            QBFriend *f = [[QBFriend alloc] initWithUserID:[friendJSON objectForKey:@"u_id"] email:[friendJSON objectForKey:@"email"]];
+            [friends addObject:f];
+        }
+        NSLog(@"friends assembled");
+        [self.friendsDelegate returnFriends:friends];
+    }
+}
+
+- (void)getFriendsFailedWithError:(NSError *)error
+{
+    [self.friendsDelegate getFriendsFailed];
 }
 
 - (void)createLobbyWithToken:(NSString *)token size:(int)size
