@@ -2,16 +2,31 @@ Quizzing Bricks iOS application
 ==================
 
 ##Testing
-If you wish to test the application as is, then first go to your local Apple Store. If you live in Sweden and outside of Stockholm, you might want to consider ordering online or going to another certified apple seller.. 
-Next, you'll need Xcode 5.0 and the iOS 7.0 SDK.
-Open the project in Xcode and hit Run.
-Most of what you see is just proof of concept and doesn't actually do much, but you can navigate your way to the game board by hitting "Log In", "Current games" and "Game #1". You'll be presented with the gameboard and clicking once on any cell will turn it greenm another click will turn the cell blue and a final click will send you right back where you started at a gray cell.
-
-The current high score is non existent.. why are you bothering testing the application at this stage. Go read a book. I recommend The Wheel of Time series.. epic as fuck.
+Get Xcode 5.0 or later and iOS SDK 7.0 or later.
+Open up the project in xcode and hit run.
 
 ##Features
-###Game Board
-The so far most complete part of this application is the gameboard, it doesn't actually do much but it serves as a proof of concept and allows us to see how the game might look at the end. 
+###Registration
+Allows you to enter an email-address and a password to create an account
 
-###Registration Login
-Promised this sprint.. we'll see.
+###Login
+Allows you to log in to your account.
+
+###Create game
+Creates a lobby and pushes the lobby-view.
+
+###Join random
+Currently not implemented, should just create a lobby with the randoms-allowd and invites dissabled by default and if possible match you in an existing lobby. The lobby will not be pushed and you have to check current games. Not sure if final.
+
+###Current games
+Not implemented. Should display both all the lobbies you are currently in and all the ongoing games. 
+
+###Friends
+Pushed a friends-view and allows you to view all your friend. The plus-sign in the upper right corner allows you to add a friend. Clicking done will always dismiss the view and failure or success is only determined by if the friend appears in the list or not. The list is updated automagically once the view is dismissed.
+
+###Lobby view
+Reached by either creating a game or by choosing an existing lobby in the current games list. The user can invite friends and ask to fill rest of slots with randoms. All users invited to this lobby is viewed and a status that shows if the user has accepted or not. This lobby will disapear once enough players have accepted. To reach the game you'll have to go back to current games and find it.
+
+###Gameview
+Dissabled in current state.
+Shows a gameboard that allows you to click anywhere. Missing is the communication to the server on press and the question-view. 
