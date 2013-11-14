@@ -31,6 +31,7 @@
 
 - (void)returnFriends:(NSArray *)friends;
 - (void)getFriendsFailed;
+- (void)addFriendFailed;
 
 @end
 
@@ -59,5 +60,6 @@
 - (void)createLobbyWithToken:(NSString *)token size:(int)size;
 - (void)getLobbyWithToken:(NSString *)token lobbyId:(NSString *)l_id;
 - (void)getFriendsWithToken:(NSString *)token;
+- (void)addFriendWithToken:(NSString *)token email:(NSString *)email;
 
 @end

@@ -10,6 +10,7 @@
 #import "QBDataManager.h"
 #import "QBCommunicationManager.h"
 #import "QBFriend.h"
+#import "QBAddFriendViewController.h"
 
 @interface QBFriendsViewController ()
 
@@ -34,10 +35,7 @@
     
     self.friends = [[NSArray alloc] init];
     
-    QBDataManager *dm = [[QBDataManager alloc] init];
-    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-    cm.friendsDelegate = self;
-    [cm getFriendsWithToken:dm.token];
+    [self getFriendsList];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -50,6 +48,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)getFriendsList
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    [cm getFriendsWithToken:dm.token];
 }
 
 - (void)returnFriends:(NSArray *)friends
@@ -65,6 +71,25 @@
 - (void)getFriendsFailed
 {
     NSLog(@"getFriendsFailed..");
+}
+
+- (void)addFriendFailed
+{
+    NSLog(@"addFriendFailed..");
+}
+
+- (IBAction)addFriend:(UIStoryboardSegue *)segue
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    QBAddFriendViewController *svc = segue.sourceViewController;
+    [cm addFriendWithToken:dm.token email:svc.email];
+}
+
+- (IBAction)cancel:(UIStoryboardSegue *)segue
+{
+    // why is this method here.. what was my plan O_ O
 }
 
 #pragma mark - Table view data source
@@ -93,11 +118,6 @@
     [cell.textLabel setText:text];
     
     return cell;
-}
-
-- (IBAction)addFriend:(UIStoryboardSegue *)segue
-{
-    
 }
 
 /*

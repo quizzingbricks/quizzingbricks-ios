@@ -13,7 +13,7 @@
 
 @implementation QBCommunicationManager
 
-- (NSMutableURLRequest *)createRequestWithPost:(NSString *)post endpoint:(NSString *)endpoint
+- (NSMutableURLRequest *)createRequestWithPost:(NSString *)post endpoint:(NSString *)endpoint token:(NSString *)token
 {
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", (int)[postData length]];
@@ -23,6 +23,9 @@
     //NSURL *url = [[NSURL alloc] initWithString:@"http://130.240.110.120:5000/api/game/lobby/"];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    if (token) {
+        [request addValue:token forHTTPHeaderField:@"token"];
+    }
     [request setURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -31,10 +34,27 @@
     return request;
 }
 
+- (NSMutableURLRequest *)createRequestWithEndpoint:(NSString *)endpoint token:(NSString *)token
+{
+    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://192.168.2.6:5000%@", endpoint]];
+    //NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://130.240.108.196:5000%@", endpoint]];
+    //NSURL *url = [[NSURL alloc] initWithString:@"http://130.240.110.120:5000/api/game/lobby/"];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    if (token) {
+        NSLog(@"token: %@", token);
+        [request addValue:token forHTTPHeaderField:@"token"];
+    }
+    [request setURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    return request;
+}
+
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password
 {
     NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", email, password];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/login/"];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/login/" token:nil];
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
             [self loginFailedWithError:error];
@@ -47,8 +67,7 @@
 - (void)getLobbiesWithToken:(NSString *)token
 {
     NSLog(@"getLobbies");
-    NSString *post = [NSString stringWithFormat:@"token=%@", token];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/game/lobby/"];
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/game/lobby/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -61,9 +80,8 @@
 
 - (void)getLobbyWithToken:(NSString *)token lobbyId:(NSString *)l_id
 {
-    NSLog(@"getLobbies");
-    NSString *post = [NSString stringWithFormat:@"token=%@", token];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:[NSString stringWithFormat:@"/api/game/lobby/%@",l_id]];
+    NSLog(@"getLobby");
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/game/lobby/%@/?token=%@" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -109,8 +127,7 @@
 - (void)getFriendsWithToken:(NSString *)token
 {
     NSLog(@"getFriends");
-    NSString *post = [NSString stringWithFormat:@"token=%@", token];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/me/friends/"];
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/users/me/friends/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -145,11 +162,31 @@
     [self.friendsDelegate getFriendsFailed];
 }
 
+- (void)addFriendWithToken:(NSString *)token email:(NSString *)email
+{
+    NSLog(@"addFriend");
+    NSString *post = [NSString stringWithFormat:@"email=%@", email];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/me/friends/" token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self addFriendFailedWithError:error];
+        } else {
+            [self receivedFriendsJSON:data];
+        }
+    }];
+}
+
+- (void)addFriendFailedWithError:(NSError *)error
+{
+    [self.friendsDelegate getFriendsFailed];
+}
+
 - (void)createLobbyWithToken:(NSString *)token size:(int)size
 {
     NSLog(@"createLobby");
-    NSString *post = [NSString stringWithFormat:@"token=%@&size=%d", token, size];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/game/lobby/create"];
+    NSString *post = [NSString stringWithFormat:@"size=%d", size];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/game/lobby/create/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
