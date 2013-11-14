@@ -1,18 +1,18 @@
 //
-//  QBCreateGameViewController.m
+//  QBCreateGameSizeViewController.m
 //  QuizzingBricks
 //
-//  Created by Linus Hedenberg on 2013-09-22.
+//  Created by Linus Hedenberg on 2013-11-06.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QBCreateGameViewController.h"
+#import "QBCreateGameSizeViewController.h"
 
-@interface QBCreateGameViewController ()
+@interface QBCreateGameSizeViewController ()
 
 @end
 
-@implementation QBCreateGameViewController
+@implementation QBCreateGameSizeViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,8 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSLog(@"viewDidLoad CreateGame");
+    NSLog(@"viewDidLoad Size");
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -44,35 +43,34 @@
 
 #pragma mark - Table view data source
 
-/*
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
-*/
 
-/*
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 2;
 }
-*/
+ 
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"GameSizeCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    if (indexPath.row == 0) {
+        [cell.textLabel setText:@"Two Players"];
+    } else {
+        [cell.textLabel setText:@"Four Players"];
+    }
     
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.
@@ -113,16 +111,31 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSLog(@"what");
+    if ([self.tableView indexPathForSelectedRow].row == 0) {
+        self.gameSize = 2;
+    } else {
+        self.gameSize = 4;
+    }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    //if ([[segue identifier] isEqualToString:@"CreateGame"]) {
+    //    QBCreateGameViewController *createGameViewController = [segue destinationViewController];
+    //    if ([self.tableView indexPathForSelectedRow].row == 0) {
+    //        createGameViewController.gameSize = 2;
+    //    } else {
+    //        createGameViewController.gameSize = 4;
+    //    }
+    //}
 }
 
- */
+
 
 @end

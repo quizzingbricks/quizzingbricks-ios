@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
 
-@interface QBLoginViewController : UIViewController <UITextFieldDelegate>
+@interface QBLoginViewController : UIViewController <UITextFieldDelegate, QBLoginComDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *usernameInput;
+@property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 
 - (IBAction)logout:(UIStoryboardSegue *)segue;
 - (IBAction)login:(id)sender;

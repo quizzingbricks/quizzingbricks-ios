@@ -10,10 +10,11 @@
 
 @interface QBRegisterViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *usernameInput;
+@property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordInput;
 
 - (IBAction)cancelButton:(id)sender;
+- (IBAction)registerButton:(id)sender;
 
 @end

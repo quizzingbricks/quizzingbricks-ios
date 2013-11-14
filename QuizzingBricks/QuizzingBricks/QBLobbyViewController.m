@@ -1,29 +1,28 @@
 //
-//  QBMenuViewController.m
+//  QBLobbyViewController.m
 //  QuizzingBricks
 //
-//  Created by Linus Hedenberg on 2013-09-20.
+//  Created by Linus Hedenberg on 2013-11-12.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QBMenuViewController.h"
 #import "QBLobbyViewController.h"
-#import "QBCreateGameSizeViewController.h"
-#import "QBCommunicationManager.h"
-#import "QBDataManager.h"
-#import "QBLobby.h"
 
-@interface QBMenuViewController ()
+#import "QBLobby.h"
+#import "QBPlayer.h"
+
+@interface QBLobbyViewController ()
 
 @end
 
-@implementation QBMenuViewController
+@implementation QBLobbyViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.lobby = nil;
     }
     return self;
 }
@@ -32,7 +31,7 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad Menu");
+    NSLog(@"LobbyView view did load size:%ld",self.lobby.size);
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -47,108 +46,64 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)cancel:(UIStoryboardSegue *)segue
-{
-    if ([[segue identifier] isEqualToString:@"CancelCreate"]) {
-        [self dismissViewControllerAnimated: YES completion:NULL];
-        NSLog(@"cancelCreateDismiss");
-    }
-}
-
-- (IBAction)createLobby:(UIStoryboardSegue *)segue
-{
-    NSLog(@"createLobby");
-    if ([[segue identifier] isEqualToString:@"CreateLobby"]) {
-        NSLog(@"CrateLobby segue!");
-        QBCreateGameSizeViewController *sVC = [segue sourceViewController];
-        
-        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-        cm.lobbyDelegate = self;
-        QBDataManager *dm = [QBDataManager sharedManager];
-        [cm createLobbyWithToken:dm.token size:(int)sVC.gameSize];
-        
-    }
-}
-
-- (void)lobbies:(NSArray *) lobbyList
-{
-    for (int i = 0; i < [lobbyList count]; i++)
-    {
-        NSLog(@"l_id: %ld", [[lobbyList objectAtIndex:i] integerValue]);
-    }
-    NSLog(@"Menu: lobbies recieved");
-}
-
-- (void)getLobbiesFailed
-{
-    NSLog(@"Menu: lobbies failed");
-}
-
-- (void)createdLobby:(QBLobby *)l
-{
-    /*
-    NSLog(@"l_id: %ld", [l_id integerValue]);
-    QBCreateGameViewController *createGameViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGameViewController"];
-    createGameViewController.gameSize = [size intValue];
-    createGameViewController.lobbyID = [l_id stringValue];
-    dispatch_async(dispatch_get_main_queue(),
-                   ^{
-                       [self.navigationController pushViewController:createGameViewController animated:YES];
-                   });
-    */
-    
-    NSLog(@"Meny: createdLobby lobbySize:%ld",l.size);
-    QBLobbyViewController *lobbyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LobbyViewController"];
-    lobbyVC.lobby = l;
-    dispatch_async(dispatch_get_main_queue(),
-                   ^{
-                       [self.navigationController pushViewController:lobbyVC animated:YES];
-                   });
-}
-- (void)createLobbyFailed{
-    
-}
-
-- (void)lobby:(QBLobby *)l
-{
-    
-}
-- (void)getLobbyFailed
-{
-    
-}
-
 #pragma mark - Table view data source
 
-/*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 2;
 }
-*/
 
-/*
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    if (section == 0) {
+        //if owner of lobby only return 0..
+        return 2;
+    }
+    return [self.lobby.players count];
 }
-*/
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier = @"AddFriendCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            
+            // Configure the cell...
+            
+            return cell;
+        }
+        
+        static NSString *CellIdentifier = @"StartCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        // Configure the cell...
+        
+        return cell;
+    }
+    
+    static NSString *CellIdentifier = @"PlayerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
     
+    QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
+    [cell.textLabel setText:player.userID];
+    [cell.detailTextLabel setText:player.email];
+    
     return cell;
 }
-*/
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return @"Players";
+    }
+    return @"";
+}
+
 
 /*
 // Override to support conditional editing of the table view.

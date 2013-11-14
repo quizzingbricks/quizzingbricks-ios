@@ -10,6 +10,7 @@
 
 @implementation QBCellView
 {
+    // private variables
     int _row;
     int _column;
     int _state; // Should be changed to board and state should be asked from board.. biatch.
@@ -33,18 +34,17 @@
         _column = (int)column;
         _state = 0;
         
-        //float x_cord = 5+column*50;
-        //float y_cord = 5+row*50;
-        
-        //CGRect rectangle = CGRectMake(x_cord, y_cord, 40, 40);
-        //[self drawRect:rectangle];
         UIImage* cellImage;
         if (_state == 0) {
             cellImage = [UIImage imageNamed: @"BoardCellEmpty"];
         } else if (_state == 1) {
             cellImage = [UIImage imageNamed: @"BoardCellGreen"];
-        } else {
+        } else if (_state == 2) {
             cellImage = [UIImage imageNamed: @"BoardCellBlue"];
+        } else if (_state == 3) {
+            cellImage = [UIImage imageNamed: @"BoardCellRed"];
+        } else {
+            cellImage = [UIImage imageNamed: @"BoardCellYellow"];
         }
         _imageView = [[UIImageView alloc] initWithImage: cellImage];
         [self addSubview:_imageView];
@@ -58,9 +58,10 @@
 
 - (void)cellTapped:(UITapGestureRecognizer*)recognizer
 {
+    
     NSLog(@"Row: %d, Cell: %d", _row, _column);
     _state++;
-    if (_state > 2) {
+    if (_state > 4) {
         _state = 0;
     }
     [self update];
@@ -73,8 +74,12 @@
         cellImage = [UIImage imageNamed: @"BoardCellEmpty"];
     } else if (_state == 1) {
         cellImage = [UIImage imageNamed: @"BoardCellGreen"];
-    } else {
+    } else if (_state == 2) {
         cellImage = [UIImage imageNamed: @"BoardCellBlue"];
+    } else if (_state == 3) {
+        cellImage = [UIImage imageNamed: @"BoardCellRed"];
+    } else {
+        cellImage = [UIImage imageNamed: @"BoardCellYellow"];
     }
     _imageView = [[UIImageView alloc] initWithImage: cellImage];
     [self addSubview:_imageView];

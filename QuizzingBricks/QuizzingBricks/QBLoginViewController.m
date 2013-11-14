@@ -8,8 +8,11 @@
 
 #import "QBLoginViewController.h"
 #import "QBMenuViewController.h"
+#import "QBDataManager.h"
 
 @interface QBLoginViewController ()
+
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString;
 
 @end
 
@@ -18,6 +21,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.loadingIndicator hidesWhenStopped];
+    [self.loadingIndicator stopAnimating];
 	// Do any additional setup after loading the view, typically from a nib.
     NSLog(@"viewDidLoad Login");
 }
@@ -36,13 +41,61 @@
 }
 
 - (IBAction)login:(id)sender {
-    NSLog(@"Username: %@, Password: %@", self.usernameInput.text, self.passwordInput.text);
-    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    //[self performSegueWithIdentifier:@"loginSegue" sender:self];
+    [self.loadingIndicator startAnimating];
+    if ([self NSStringIsValidEmail:[self.emailInput text]]) {
+        NSLog(@"Valid Mail");
+    } else {
+        NSLog(@"Invalid Mail");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email" message:@"The email is not valid." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
+    QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
+    qbc.loginDelegate = self;
+    NSString *email = @"a@a.a";
+    NSString *password = @"b";
+    if (![self.emailInput.text isEqualToString:@""]) {
+        email = self.emailInput.text;
+    }
+    if (![self.passwordInput.text isEqualToString:@""]) {
+        password = self.passwordInput.text;
+    }
+    
+    [qbc loginWithEmail:email password:password];
+}
+
+- (void)loginToken:(NSString *)token
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [dm setToken:token];
+    [self.loadingIndicator stopAnimating];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+     [self performSegueWithIdentifier:@"loginSegue" sender:self];
+     });
+}
+
+- (void)loginFailed
+{
+    [self.loadingIndicator stopAnimating];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Please try again.. biatch." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alert show];
+    NSLog(@"login failed");
+}
+
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ((textField == self.usernameInput) || (textField == self.passwordInput)) {
+    if ((textField == self.emailInput) || (textField == self.passwordInput)) {
         [textField resignFirstResponder];
     }
     return YES;

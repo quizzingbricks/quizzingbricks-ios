@@ -39,4 +39,36 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)registerButton:(id)sender {
+    NSLog(@"Username: %@, Password: %@", self.emailInput.text, self.passwordInput.text);
+    
+    NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", self.emailInput.text, self.passwordInput.text];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%ld", [postData length]];
+    
+    NSURL *url = [[NSURL alloc] initWithString:@"http://192.168.2.6:5000/api/user/register/"];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        if (error) {
+            [self fetchingFailedWithError:error];
+        } else {
+            NSLog(@"Registration success!");
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+
+- (void)fetchingFailedWithError:(NSError *)error
+{
+    NSLog(@"failed registration");
+}
+
 @end
