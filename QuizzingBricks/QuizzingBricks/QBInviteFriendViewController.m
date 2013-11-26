@@ -7,6 +7,10 @@
 //
 
 #import "QBInviteFriendViewController.h"
+#import "QBDataManager.h"
+#import "QBCommunicationManager.h"
+#import "QBFriend.h"
+#import "QBAddFriendViewController.h"
 
 @interface QBInviteFriendViewController ()
 
@@ -26,10 +30,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    NSLog(@"Invite did load");
+    
+    self.friends = [[NSArray alloc] init];
+    self.invitation = [[NSMutableArray alloc] init];
+    
+    [self getFriendsList];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -40,30 +51,93 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)getFriendsList
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    [cm getFriendsWithToken:dm.token];
+}
+
+- (void)returnFriends:(NSArray *)friends
+{
+    NSLog(@"returnFriends");
+    self.friends = friends;
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.tableView reloadData];
+                   });
+}
+
+- (void)getFriendsFailed
+{
+    NSLog(@"getFriendsFailed..");
+}
+
+- (void)addFriendFailed
+{
+    NSLog(@"addFriendFailed..");
+}
+
+- (IBAction)addFriend:(UIStoryboardSegue *)segue
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    QBAddFriendViewController *svc = segue.sourceViewController;
+    [cm addFriendWithToken:dm.token email:svc.email];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    NSLog(@"friends count: %ld", (unsigned long)[self.friends count]);
+    return [self.friends count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FriendCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
+    NSString *text = [NSString stringWithFormat:@"%@ - %@",[friend userID],[friend email]];
+    [cell.textLabel setText:text];
+    NSLog(@"inlobby: %@", self.inLobby);
+    NSLog(@"invitation: %@", self.invitation);
+    if ([self.invitation containsObject:friend.userID] || [self.inLobby containsObject:friend.userID]) {
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    } else {
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([self.invitation containsObject:friend.userID]) {
+        [self.invitation removeObject:friend.userID];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    } else if ([self.inLobby containsObject:friend.userID]) {
+        // do nothing
+    } else {
+        [self.invitation addObject:friend.userID];
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /*
