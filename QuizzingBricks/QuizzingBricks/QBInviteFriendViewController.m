@@ -1,23 +1,22 @@
 //
-//  QBGamesViewController.m
+//  QBInviteFriendViewController.m
 //  QuizzingBricks
 //
-//  Created by Linus Hedenberg on 2013-09-22.
+//  Created by Linus Hedenberg on 2013-11-18.
 //  Copyright (c) 2013 Linus Hedenberg. All rights reserved.
 //
 
-#import "QBGamesViewController.h"
+#import "QBInviteFriendViewController.h"
 #import "QBDataManager.h"
 #import "QBCommunicationManager.h"
-#import "QBLobby.h"
-#import "QBGame.h"
-#import "QBLobbyViewController.h"
+#import "QBFriend.h"
+#import "QBAddFriendViewController.h"
 
-@interface QBGamesViewController ()
+@interface QBInviteFriendViewController ()
 
 @end
 
-@implementation QBGamesViewController
+@implementation QBInviteFriendViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,17 +31,16 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad Games");
+    NSLog(@"Invite did load");
     
-    self.lobbies = [[NSArray alloc] init];
-    self.games = [[NSArray alloc] init];
+    self.friends = [[NSArray alloc] init];
+    self.invitation = [[NSMutableArray alloc] init];
     
-    [self getLobbyList];
-    [self getGameList];
-
+    [self getFriendsList];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -53,121 +51,94 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)getLobbyList
+- (void)getFriendsList
 {
     QBDataManager *dm = [QBDataManager sharedManager];
     QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-    cm.lobbyDelegate = self;
-    [cm getLobbiesWithToken:dm.token];
+    cm.friendsDelegate = self;
+    [cm getFriendsWithToken:dm.token];
 }
 
-- (void)getGameList
+- (void)returnFriends:(NSArray *)friends
 {
-    QBDataManager *dm = [QBDataManager sharedManager];
-    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-    cm.gameDelegate = self;
-    [cm getGamesWithToken:dm.token];
-}
-
-- (void)lobbies:(NSArray *)lobbyList{
-    self.lobbies = lobbyList;
-    NSLog(@"loblen: %ld", (unsigned long)(long)self.lobbies.count);
+    NSLog(@"returnFriends");
+    self.friends = friends;
     dispatch_async(dispatch_get_main_queue(),
                    ^{
                        [self.tableView reloadData];
                    });
 }
 
-- (void)getLobbiesFailed{
-    // TODO: Error-handle this sheit
-    NSLog(@"getLobbies Failed.");
+- (void)getFriendsFailed
+{
+    NSLog(@"getFriendsFailed..");
 }
 
-- (void)lobby:(QBLobby *)l{
-    
-    // Not used
+- (void)addFriendFailed
+{
+    NSLog(@"addFriendFailed..");
 }
 
-- (void)getLobbyFailed{
-    // TODO: Error-handle this sheit
-    NSLog(@"getLobby Failed.");
+- (IBAction)addFriend:(UIStoryboardSegue *)segue
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    QBAddFriendViewController *svc = segue.sourceViewController;
+    [cm addFriendWithToken:dm.token email:svc.email];
 }
-
-- (void)createdLobby:(QBLobby *)l{
-    // Not used
-}
-
-- (void)createLobbyFailed{
-    // TODO: Error-handle this sheit
-    NSLog(@"createLobby Failed.");
-}
-
-- (void)games:(NSArray *)gameList{
-    self.games = gameList;
-    NSLog(@"gamelen: %ld", (long)self.games.count);
-    dispatch_async(dispatch_get_main_queue(),
-                   ^{
-                       [self.tableView reloadData];
-                   });
-}
-
-- (void)getGamesFailed{
-    // TODO: Error-handle this sheit
-    NSLog(@"getGames Failed.");
-}
-
-- (void)game:(QBGame *)g{
-    // Not used
-}
-
-- (void)getGameFailed{
-    // TODO: Error-handle this sheit
-    NSLog(@"getGame Failed.");
-}
-
 
 #pragma mark - Table view data source
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0) {
-        return self.lobbies.count;
-    }
-    return self.games.count;
+    NSLog(@"friends count: %ld", (unsigned long)[self.friends count]);
+    return [self.friends count];
 }
-
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        NSLog(@"lobbycell");
-        static NSString *CellIdentifier = @"LobbyCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-        // Configure the cell...
-        
-        
-        return cell;
-
-    }
-    static NSString *CellIdentifier = @"GameCell";
+    static NSString *CellIdentifier = @"FriendCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
+    NSString *text = [NSString stringWithFormat:@"%@ - %@",[friend userID],[friend email]];
+    [cell.textLabel setText:text];
+    NSLog(@"inlobby: %@", self.inLobby);
+    NSLog(@"invitation: %@", self.invitation);
+    if ([self.invitation containsObject:friend.userID] || [self.inLobby containsObject:friend.userID]) {
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    } else {
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
     
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([self.invitation containsObject:friend.userID]) {
+        [self.invitation removeObject:friend.userID];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    } else if ([self.inLobby containsObject:friend.userID]) {
+        // do nothing
+    } else {
+        [self.invitation addObject:friend.userID];
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -208,7 +179,7 @@
 }
 */
 
-
+/*
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
@@ -216,11 +187,8 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    if ([[segue identifier] isEqualToString:@"ViewLobbySegue"]) {
-        QBLobbyViewController *lvc = segue.destinationViewController;
-        lvc.lobbyID = [self.lobbies objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-    }
 }
 
+ */
 
 @end

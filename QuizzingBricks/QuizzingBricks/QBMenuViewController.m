@@ -74,7 +74,7 @@
 {
     for (int i = 0; i < [lobbyList count]; i++)
     {
-        NSLog(@"l_id: %ld", [[lobbyList objectAtIndex:i] integerValue]);
+        NSLog(@"l_id: %ld", (long)[[lobbyList objectAtIndex:i] integerValue]);
     }
     NSLog(@"Menu: lobbies recieved");
 }
@@ -97,7 +97,7 @@
                    });
     */
     
-    NSLog(@"Meny: createdLobby lobbySize:%ld",l.size);
+    NSLog(@"Meny: createdLobby lobbySize:%ld",(long)l.size);
     QBLobbyViewController *lobbyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LobbyViewController"];
     lobbyVC.lobby = l;
     dispatch_async(dispatch_get_main_queue(),

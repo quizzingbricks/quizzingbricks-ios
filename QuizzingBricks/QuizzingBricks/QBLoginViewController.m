@@ -27,6 +27,21 @@
     NSLog(@"viewDidLoad Login");
 }
 
+/*
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.loadingIndicator hidesWhenStopped];
+    [self.loadingIndicator stopAnimating];
+    
+    QBDataManager *dm = [QBDataManager sharedManager];
+    if (![dm.token isEqualToString:@""]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        });
+    }
+    
+}*/
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -45,28 +60,29 @@
     [self.loadingIndicator startAnimating];
     if ([self NSStringIsValidEmail:[self.emailInput text]]) {
         NSLog(@"Valid Mail");
+        QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
+        qbc.loginDelegate = self;
+        NSString *email = @"a@a.a";
+        NSString *password = @"b";
+        if (![self.emailInput.text isEqualToString:@""]) {
+            email = self.emailInput.text;
+        }
+        if (![self.passwordInput.text isEqualToString:@""]) {
+            password = self.passwordInput.text;
+        }
+        
+        [qbc loginWithEmail:email password:password];
     } else {
         NSLog(@"Invalid Mail");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email" message:@"The email is not valid." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
+        [self.loadingIndicator stopAnimating];
     }
-    
-    QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
-    qbc.loginDelegate = self;
-    NSString *email = @"a@a.a";
-    NSString *password = @"b";
-    if (![self.emailInput.text isEqualToString:@""]) {
-        email = self.emailInput.text;
-    }
-    if (![self.passwordInput.text isEqualToString:@""]) {
-        password = self.passwordInput.text;
-    }
-    
-    [qbc loginWithEmail:email password:password];
 }
 
 - (void)loginToken:(NSString *)token
 {
+    NSLog(@"loginTokenreturn");
     QBDataManager *dm = [QBDataManager sharedManager];
     [dm setToken:token];
     [self.loadingIndicator stopAnimating];
@@ -77,9 +93,11 @@
 
 - (void)loginFailed
 {
-    [self.loadingIndicator stopAnimating];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Please try again.. biatch." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [alert show];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.loadingIndicator stopAnimating];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Please try again.. biatch." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+    });
     NSLog(@"login failed");
 }
 

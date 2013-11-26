@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSString *status;
 
 - (id)initWithUserID:(NSString *)userID email:(NSString *)email status:(NSString *)status;
+- (id)initWithUserID:(NSString *)userID email:(NSString *)email;
 
 @end

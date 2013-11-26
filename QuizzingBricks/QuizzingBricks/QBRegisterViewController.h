@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
 
-@interface QBRegisterViewController : UIViewController
+@interface QBRegisterViewController : UIViewController <QBRegisterComDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordInput;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 
 - (IBAction)cancelButton:(id)sender;
 - (IBAction)registerButton:(id)sender;
+
+- (void)registerSuccess;
+- (void)registerFailed;
 
 @end

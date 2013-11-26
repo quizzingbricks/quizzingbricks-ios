@@ -16,6 +16,7 @@
 		D439FE7C1834EE6E002549F6 /* QBAddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D439FE7B1834EE6E002549F6 /* QBAddFriendViewController.m */; };
 		D43ED21517EF24A40082BEFC /* QBGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21417EF24A40082BEFC /* QBGamesViewController.m */; };
 		D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D43ED21717EF25A10082BEFC /* QBGameViewController.m */; };
+		D4408454183A174C00D7D122 /* QBInviteFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4408453183A174C00D7D122 /* QBInviteFriendViewController.m */; };
 		D46CF49B17ECB333000BDD43 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49A17ECB333000BDD43 /* Foundation.framework */; };
 		D46CF49D17ECB333000BDD43 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49C17ECB333000BDD43 /* CoreGraphics.framework */; };
 		D46CF49F17ECB333000BDD43 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D46CF49E17ECB333000BDD43 /* UIKit.framework */; };
@@ -31,6 +32,7 @@
 		D46CF4C417ECB334000BDD43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CF4C217ECB334000BDD43 /* InfoPlist.strings */; };
 		D46CF4C617ECB334000BDD43 /* QuizzingBricksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */; };
 		D46CF4D117ECB3FA000BDD43 /* QBMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */; };
+		D474737D183BFD1C00465EAC /* QBGame.m in Sources */ = {isa = PBXBuildFile; fileRef = D474737C183BFD1C00465EAC /* QBGame.m */; };
 		D4BCBBCA1831356300717D3D /* QBLobby.m in Sources */ = {isa = PBXBuildFile; fileRef = D4BCBBC91831356300717D3D /* QBLobby.m */; };
 		D4CD43781803F55700E4FEBF /* QBRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4CD43771803F55700E4FEBF /* QBRegisterViewController.m */; };
 		D4CD4383180699C500E4FEBF /* BoardCellBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = D4CD4379180699C500E4FEBF /* BoardCellBlue.png */; };
@@ -78,6 +80,8 @@
 		D43ED21417EF24A40082BEFC /* QBGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBGamesViewController.m; sourceTree = "<group>"; };
 		D43ED21617EF25A10082BEFC /* QBGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBGameViewController.h; sourceTree = "<group>"; };
 		D43ED21717EF25A10082BEFC /* QBGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBGameViewController.m; sourceTree = "<group>"; };
+		D4408452183A174C00D7D122 /* QBInviteFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBInviteFriendViewController.h; sourceTree = "<group>"; };
+		D4408453183A174C00D7D122 /* QBInviteFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBInviteFriendViewController.m; sourceTree = "<group>"; };
 		D46CF49717ECB333000BDD43 /* QuizzingBricks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuizzingBricks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D46CF49A17ECB333000BDD43 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D46CF49C17ECB333000BDD43 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -99,6 +103,8 @@
 		D46CF4C517ECB334000BDD43 /* QuizzingBricksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuizzingBricksTests.m; sourceTree = "<group>"; };
 		D46CF4CF17ECB3FA000BDD43 /* QBMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBMenuViewController.h; sourceTree = "<group>"; };
 		D46CF4D017ECB3FA000BDD43 /* QBMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBMenuViewController.m; sourceTree = "<group>"; };
+		D474737B183BFD1C00465EAC /* QBGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBGame.h; sourceTree = "<group>"; };
+		D474737C183BFD1C00465EAC /* QBGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBGame.m; sourceTree = "<group>"; };
 		D4BCBBC81831356300717D3D /* QBLobby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBLobby.h; sourceTree = "<group>"; };
 		D4BCBBC91831356300717D3D /* QBLobby.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBLobby.m; sourceTree = "<group>"; };
 		D4CD43761803F55700E4FEBF /* QBRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBRegisterViewController.h; sourceTree = "<group>"; };
@@ -201,6 +207,8 @@
 				D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */,
 				D4325B4F18322BAF008AEF13 /* QBLobbyViewController.h */,
 				D4325B5018322BAF008AEF13 /* QBLobbyViewController.m */,
+				D4408452183A174C00D7D122 /* QBInviteFriendViewController.h */,
+				D4408453183A174C00D7D122 /* QBInviteFriendViewController.m */,
 				D43ED21317EF24A40082BEFC /* QBGamesViewController.h */,
 				D43ED21417EF24A40082BEFC /* QBGamesViewController.m */,
 				D4DBF8D11817C5ED00D9C01B /* QBQuestionViewController.h */,
@@ -213,6 +221,8 @@
 				D4E62CE918034679002F0CDA /* QBCellView.m */,
 				D4BCBBC81831356300717D3D /* QBLobby.h */,
 				D4BCBBC91831356300717D3D /* QBLobby.m */,
+				D474737B183BFD1C00465EAC /* QBGame.h */,
+				D474737C183BFD1C00465EAC /* QBGame.m */,
 				D4325B4C183229AE008AEF13 /* QBPlayer.h */,
 				D4325B4D183229AE008AEF13 /* QBPlayer.m */,
 				D4325B551834CF50008AEF13 /* QBFriend.h */,
@@ -394,8 +404,10 @@
 				D4DBF8D31817C5ED00D9C01B /* QBQuestionViewController.m in Sources */,
 				D4325B5118322BAF008AEF13 /* QBLobbyViewController.m in Sources */,
 				D4E62CE718034651002F0CDA /* QBBoardView.m in Sources */,
+				D474737D183BFD1C00465EAC /* QBGame.m in Sources */,
 				D400B06E18213EAD00423568 /* QBDataManager.m in Sources */,
 				D4325B571834CF50008AEF13 /* QBFriend.m in Sources */,
+				D4408454183A174C00D7D122 /* QBInviteFriendViewController.m in Sources */,
 				D4BCBBCA1831356300717D3D /* QBLobby.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,4 +22,16 @@
     return self;
 }
 
+- (id)initWithUserID:(NSString *)userID email:(NSString *)email
+{
+    self = [super init];
+    if (self) {
+        // Initialization code
+        self.userID = userID;
+        self.email = email;
+        self.status = @"inGame";
+    }
+    return self;
+}
+
 @end

@@ -10,10 +10,12 @@
 
 @interface QBLobby : NSObject
 
+@property (strong, nonatomic) NSString *lobbyID;
 @property (nonatomic) NSInteger size;
 @property (nonatomic) BOOL isOwner;
 @property (strong, nonatomic) NSArray *players;
 
 - (id)initWithSize:(NSInteger)size isOwner:(BOOL)isOwner players:(NSArray *)players;
+- (id)initWithID: (NSString *)l_id size:(NSInteger)size isOwner:(BOOL)isOwner players:(NSArray *)players;
 
 @end

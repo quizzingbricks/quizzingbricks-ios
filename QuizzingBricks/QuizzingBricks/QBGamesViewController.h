@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
 
-@interface QBGamesViewController : UITableViewController
+@interface QBGamesViewController : UITableViewController <QBLobbyComDelegate, QBGameComDelegate>
+
+@property (strong, nonatomic) NSArray *lobbies;
+@property (strong, nonatomic) NSArray *games;
 
 @end
