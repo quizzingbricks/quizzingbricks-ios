@@ -7,6 +7,8 @@
 //
 
 #import "QBRegisterViewController.h"
+#import "QBCommunicationManager.h"
+#import "QBDataManager.h"
 
 @interface QBRegisterViewController ()
 
@@ -26,6 +28,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"viewDidLoad Register");
+    [self.loadingIndicator hidesWhenStopped];
+    [self.loadingIndicator stopAnimating];
 	// Do any additional setup after loading the view.
 }
 
@@ -40,35 +45,37 @@
 }
 
 - (IBAction)registerButton:(id)sender {
-    NSLog(@"Username: %@, Password: %@", self.emailInput.text, self.passwordInput.text);
-    
-    NSString *post = [NSString stringWithFormat:@"email=%@&password=%@", self.emailInput.text, self.passwordInput.text];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%ld", [postData length]];
-    
-    NSURL *url = [[NSURL alloc] initWithString:@"http://192.168.2.6:5000/api/user/register/"];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        
-        if (error) {
-            [self fetchingFailedWithError:error];
-        } else {
-            NSLog(@"Registration success!");
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }
-    }];
+    [self.loadingIndicator startAnimating];
+    if ([[self.passwordInput text] isEqualToString:[self.confirmPasswordInput text]]) {
+        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+        cm.registerDelegate = self;
+        [cm registerWithEmail:[self.emailInput text] password:[self.passwordInput text]];
+    } else {
+        NSLog(@"Invalid Mail");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid email" message:@"The email is not valid." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.loadingIndicator stopAnimating];
+    }
 }
 
-- (void)fetchingFailedWithError:(NSError *)error
-{
-    NSLog(@"failed registration");
+- (void)registerSuccess {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.loadingIndicator stopAnimating];
+        //NSLog(@"Registration success!");
+        //QBDataManager *dm = [QBDataManager sharedManager];
+        //[dm setToken:token];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    });
 }
+
+- (void)registerFailed {
+    NSLog(@"register failed");
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Register failed" message:@"The email is invalid or already connected to an account." delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.loadingIndicator stopAnimating];
+    });
+}
+
 
 @end

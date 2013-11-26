@@ -103,7 +103,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSLog(@"friends count: %ld", [self.friends count]);
+    NSLog(@"friends count: %ld", (unsigned long)[self.friends count]);
     return [self.friends count];
 }
 
@@ -116,6 +116,7 @@
     QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
     NSString *text = [NSString stringWithFormat:@"%@ - %@",[friend userID],[friend email]];
     [cell.textLabel setText:text];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }

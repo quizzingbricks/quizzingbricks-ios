@@ -10,6 +10,9 @@
 
 #import "QBLobby.h"
 #import "QBPlayer.h"
+#import "QBInviteFriendViewController.h"
+#import "QBDataManager.h"
+#import "QBCommunicationManager.h"
 
 @interface QBLobbyViewController ()
 
@@ -31,7 +34,7 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"LobbyView view did load size:%ld",self.lobby.size);
+    NSLog(@"LobbyView view did load size:%ld",(long)self.lobby.size);
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -40,10 +43,53 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.lobby == nil) {
+        NSLog(@"lobby is nil");
+        
+        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+        cm.lobbyDelegate = self;
+        QBDataManager *dm = [QBDataManager sharedManager];
+        [cm getLobbyWithToken:dm.token lobbyId:self.lobbyID];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)lobbies:(NSArray *)lobbyList{
+    // Not used
+}
+
+- (void)getLobbiesFailed{
+     // Not used
+}
+
+- (void)lobby:(QBLobby *)l{
+    self.lobby = l;
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.tableView reloadData];
+                   });
+    
+}
+
+- (void)getLobbyFailed{
+    NSLog(@"getLobby failed");
+}
+
+- (void)createdLobby:(QBLobby *)l{
+     // Not used
+}
+
+- (void)createLobbyFailed{
+     // Not used
 }
 
 #pragma mark - Table view data source
@@ -92,6 +138,12 @@
     QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
     [cell.textLabel setText:player.userID];
     [cell.detailTextLabel setText:player.email];
+    NSLog(@"player status: %@ %@", player.status, player.email);
+    if ([player.status isEqualToString:@"accepted"]) {
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    } else {
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
     
     return cell;
 }
@@ -104,6 +156,21 @@
     return @"";
 }
 
+- (IBAction)inviteDone:(UIStoryboardSegue *)segue
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.friendsDelegate = self;
+    QBInviteFriendViewController *ifvc = segue.sourceViewController;
+    //ifvc.invitation
+    
+    //[cm addFriendWithToken:dm.token email:if.email];
+}
+
+- (IBAction)inviteCancel:(UIStoryboardSegue *)segue
+{
+    // why is this method here.. what was my plan O_ O
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -152,8 +219,14 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    QBInviteFriendViewController *ifvc = [segue destinationViewController];
+    NSMutableArray *inLobby = [[NSMutableArray alloc] init];
+    for (QBPlayer *player in self.lobby.players) {
+        [inLobby addObject:player.userID];
+    }
+    ifvc.inLobby = inLobby;
+    
 }
-
- */
+*/
 
 @end

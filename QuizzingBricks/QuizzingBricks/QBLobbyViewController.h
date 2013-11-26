@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
 
 @class QBLobby;
 
-@interface QBLobbyViewController : UITableViewController
+@interface QBLobbyViewController : UITableViewController <QBLobbyComDelegate>
 
 @property (strong, nonatomic) QBLobby *lobby;
+@property (strong, nonatomic) NSString *lobbyID;
 
 @end
