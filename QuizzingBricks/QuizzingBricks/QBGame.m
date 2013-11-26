@@ -10,4 +10,30 @@
 
 @implementation QBGame
 
+- (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players
+{
+    self = [super init];
+    if (self) {
+        // Initialization code
+        self.gameID = nil;
+        self.size = size;
+        self.status = status;
+        self.players = players;
+    }
+    return self;
+}
+
+- (id)initWithSize:(NSInteger)size gameID:(NSString *)gameID status:(NSString *)status
+{
+    self = [super init];
+    if (self) {
+        // Initialization code
+        self.gameID = gameID;
+        self.size = size;
+        self.status = status;
+        self.players = [[NSArray alloc] init];
+    }
+    return self;
+}
+
 @end

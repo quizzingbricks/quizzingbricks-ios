@@ -10,4 +10,12 @@
 
 @interface QBGame : NSObject
 
+@property (strong, nonatomic) NSString *gameID;
+@property (nonatomic) NSInteger size;
+@property (strong, nonatomic) NSString *status;
+@property (strong, nonatomic) NSArray *players;
+
+- (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players;
+- (id)initWithSize:(NSInteger)size gameID:(NSString *)gameID status:(NSString *)status;
+
 @end

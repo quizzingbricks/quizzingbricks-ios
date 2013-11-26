@@ -7,6 +7,11 @@
 //
 
 #import "QBGamesViewController.h"
+#import "QBDataManager.h"
+#import "QBCommunicationManager.h"
+#import "QBLobby.h"
+#import "QBGame.h"
+#import "QBLobbyViewController.h"
 
 @interface QBGamesViewController ()
 
@@ -28,6 +33,12 @@
     [super viewDidLoad];
     
     NSLog(@"viewDidLoad Games");
+    
+    self.lobbies = [[NSArray alloc] init];
+    self.games = [[NSArray alloc] init];
+    
+    [self getLobbyList];
+    [self getGameList];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -42,37 +53,121 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)getLobbyList
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.lobbyDelegate = self;
+    [cm getLobbiesWithToken:dm.token];
+}
+
+- (void)getGameList
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.gameDelegate = self;
+    [cm getGamesWithToken:dm.token];
+}
+
+- (void)lobbies:(NSArray *)lobbyList{
+    self.lobbies = lobbyList;
+    NSLog(@"loblen: %ld", (unsigned long)(long)self.lobbies.count);
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.tableView reloadData];
+                   });
+}
+
+- (void)getLobbiesFailed{
+    // TODO: Error-handle this sheit
+    NSLog(@"getLobbies Failed.");
+}
+
+- (void)lobby:(QBLobby *)l{
+    
+    // Not used
+}
+
+- (void)getLobbyFailed{
+    // TODO: Error-handle this sheit
+    NSLog(@"getLobby Failed.");
+}
+
+- (void)createdLobby:(QBLobby *)l{
+    // Not used
+}
+
+- (void)createLobbyFailed{
+    // TODO: Error-handle this sheit
+    NSLog(@"createLobby Failed.");
+}
+
+- (void)games:(NSArray *)gameList{
+    self.games = gameList;
+    NSLog(@"gamelen: %ld", (long)self.games.count);
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.tableView reloadData];
+                   });
+}
+
+- (void)getGamesFailed{
+    // TODO: Error-handle this sheit
+    NSLog(@"getGames Failed.");
+}
+
+- (void)game:(QBGame *)g{
+    // Not used
+}
+
+- (void)getGameFailed{
+    // TODO: Error-handle this sheit
+    NSLog(@"getGame Failed.");
+}
+
+
 #pragma mark - Table view data source
 
-/*
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 2;
 }
-*/
 
-/*
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    if (section == 0) {
+        return self.lobbies.count;
+    }
+    return self.games.count;
 }
-*/
 
-/*
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    if (indexPath.section == 0) {
+        NSLog(@"lobbycell");
+        static NSString *CellIdentifier = @"LobbyCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        // Configure the cell...
+        
+        
+        return cell;
+
+    }
+    static NSString *CellIdentifier = @"GameCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -113,7 +208,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
@@ -121,8 +216,11 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"ViewLobbySegue"]) {
+        QBLobbyViewController *lvc = segue.destinationViewController;
+        lvc.lobbyID = [self.lobbies objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    }
 }
 
- */
 
 @end
