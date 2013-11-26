@@ -5,6 +5,9 @@ Quizzing Bricks iOS application
 Get Xcode 5.0 or later and iOS SDK 7.0 or later.
 Open up the project in xcode and hit run.
 
+Currently some parts use the old API and some parts the new. 
+Login and Register works as intended. GET friends works but POST friends (add new friend) currently has some API differences. Working on solution.
+
 ##Features
 ###Registration
 Allows you to enter an email-address and a password to create an account
