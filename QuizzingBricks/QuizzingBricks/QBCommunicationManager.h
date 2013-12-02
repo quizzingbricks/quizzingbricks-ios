@@ -33,6 +33,12 @@
 - (void)getLobbyFailed;
 - (void)createdLobby:(QBLobby *)l;
 - (void)createLobbyFailed;
+- (void)inviteFriendSucceded;
+- (void)inviteFriendFailed;
+- (void)acceptInviteSucceeded;
+- (void)acceptInviteFailed;
+- (void)startGameSucceeded;
+- (void)startGameFailed;
 
 @end
 
@@ -49,6 +55,7 @@
 
 - (void)returnFriends:(NSArray *)friends;
 - (void)getFriendsFailed;
+- (void)addFriendSucceded;
 - (void)addFriendFailed;
 
 @end
@@ -82,9 +89,13 @@
 - (void)getLobbiesWithToken:(NSString *)token;
 - (void)createLobbyWithToken:(NSString *)token size:(int)size;
 - (void)getLobbyWithToken:(NSString *)token lobbyId:(NSString *)l_id;
+- (void)inviteFriendWithToken:(NSString *)token lobbyID:(NSString *)l_id friendIDs:(NSArray *)f_ids;
+- (void)acceptInviteWithToken:(NSString *)token lobbyID:(NSString *)l_id;
+- (void)startGameWithToken:(NSString *)token lobbyID:(NSString *)l_id;
 - (void)getGamesWithToken:(NSString *)token;
 - (void)getGameWithToken:(NSString *)token gameId:(NSString *)g_id;
 - (void)getFriendsWithToken:(NSString *)token;
 - (void)addFriendWithToken:(NSString *)token email:(NSString *)email;
+- (void)getMeWithToken:(NSString *)token;
 
 @end
