@@ -11,7 +11,9 @@
 #import "QBCommunicationManager.h"
 #import "QBLobby.h"
 #import "QBGame.h"
+#import "QBPlayer.h"
 #import "QBLobbyViewController.h"
+#import "QBGameViewController.h"
 
 @interface QBGamesViewController ()
 
@@ -45,6 +47,14 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self getLobbyList];
+    [self getGameList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,8 +93,8 @@
     NSLog(@"getLobbies Failed.");
 }
 
-- (void)lobby:(QBLobby *)l{
-    
+- (void)lobby:(QBLobby *)l
+{
     // Not used
 }
 
@@ -102,6 +112,36 @@
     NSLog(@"createLobby Failed.");
 }
 
+- (void)inviteFriendSucceded
+{
+    // Not used
+}
+
+- (void)inviteFriendFailed
+{
+    // Not used
+}
+
+- (void)acceptInviteSucceeded
+{
+    // Not used
+}
+
+- (void)acceptInviteFailed
+{
+    // Not used
+}
+
+- (void)startGameSucceeded
+{
+    // Not used
+}
+
+- (void)startGameFailed
+{
+    // Not used
+}
+
 - (void)games:(NSArray *)gameList{
     self.games = gameList;
     NSLog(@"gamelen: %ld", (long)self.games.count);
@@ -116,7 +156,8 @@
     NSLog(@"getGames Failed.");
 }
 
-- (void)game:(QBGame *)g{
+- (void)game:(QBGame *)g
+{
     // Not used
 }
 
@@ -124,7 +165,6 @@
     // TODO: Error-handle this sheit
     NSLog(@"getGame Failed.");
 }
-
 
 #pragma mark - Table view data source
 
@@ -154,9 +194,18 @@
         static NSString *CellIdentifier = @"LobbyCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
-        // Configure the cell...
-        
-        
+        // Configure the cell...;
+        QBLobby *lobby = [self.lobbies objectAtIndex:indexPath.row];
+        if (lobby.isOwner) {
+            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby - Owner %@",[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
+        } else {
+            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby %@",[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
+        }
+        if (lobby.size == 2) {
+            [cell.detailTextLabel setText:@"Two Player"];
+        } else {
+            [cell.detailTextLabel setText:@"Four Player"];
+        }
         return cell;
 
     }
@@ -164,6 +213,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    [cell.textLabel setText:[NSString stringWithFormat:@"%@", [self.games objectAtIndex:indexPath.row]]];
     
     return cell;
 }
@@ -218,7 +268,11 @@
     // Pass the selected object to the new view controller.
     if ([[segue identifier] isEqualToString:@"ViewLobbySegue"]) {
         QBLobbyViewController *lvc = segue.destinationViewController;
-        lvc.lobbyID = [self.lobbies objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        lvc.lobbyID = [[self.lobbies objectAtIndex:[self.tableView indexPathForSelectedRow].row] lobbyID];
+    } else if ([[segue identifier] isEqualToString:@"ViewGameSegue"]) {
+        QBGameViewController *gvc = segue.destinationViewController;
+        gvc.gameID = [self.games objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        
     }
 }
 

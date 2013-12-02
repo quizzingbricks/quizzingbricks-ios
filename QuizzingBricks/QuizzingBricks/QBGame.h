@@ -14,7 +14,9 @@
 @property (nonatomic) NSInteger size;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSArray *players;
+@property (strong, nonatomic) NSArray *board;
 
+- (id)initWithGameID:(NSString *)gameID board:(NSArray *)board players:(NSArray *)players;
 - (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players;
 - (id)initWithSize:(NSInteger)size gameID:(NSString *)gameID status:(NSString *)status;
 

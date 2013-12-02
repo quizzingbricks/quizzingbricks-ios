@@ -85,10 +85,13 @@
     NSLog(@"loginTokenreturn");
     QBDataManager *dm = [QBDataManager sharedManager];
     [dm setToken:token];
-    [self.loadingIndicator stopAnimating];
-    dispatch_sync(dispatch_get_main_queue(), ^{
-     [self performSegueWithIdentifier:@"loginSegue" sender:self];
-     });
+    QBCommunicationManager *qbc = [[QBCommunicationManager alloc] init];
+    qbc.meDelegate = self;
+    [qbc getMeWithToken:token];
+    //[self.loadingIndicator stopAnimating];
+    //dispatch_sync(dispatch_get_main_queue(), ^{
+    // [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    // });
 }
 
 - (void)loginFailed
@@ -99,6 +102,26 @@
         [alert show];
     });
     NSLog(@"login failed");
+}
+
+- (void)returnMeWithUserID:(NSString *)userID email:(NSString *) email
+{
+    NSLog(@"returnMeWithUserID");
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [dm setU_id:userID];
+    [dm setEmail:email];
+    NSLog(@"u_id: %@, email: %@", userID, email);
+    [self.loadingIndicator stopAnimating];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    });
+    
+}
+
+- (void)getMeFailed
+{
+    NSLog(@"GetMeFailed  in loginView");
+    
 }
 
 - (BOOL)NSStringIsValidEmail:(NSString *)checkString

@@ -10,6 +10,17 @@
 
 @implementation QBGame
 
+- (id)initWithGameID:(NSString *)gameID board:(NSArray *)board players:(NSArray *)players
+{
+    self = [super init];
+    if (self) {
+        self.gameID = gameID;
+        self.board = board;
+        self.players = players;
+    }
+    return self;
+}
+
 - (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players
 {
     self = [super init];
@@ -19,6 +30,10 @@
         self.size = size;
         self.status = status;
         self.players = players;
+        /*
+         for (int i = 0; i<8; i++) {
+         [self.board replaceObjectAtIndex:i withObject:[[NSMutableArray alloc] initWithCapacity:8]];
+         }*/
     }
     return self;
 }

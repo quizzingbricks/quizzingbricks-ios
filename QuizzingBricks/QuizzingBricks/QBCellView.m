@@ -9,13 +9,6 @@
 #import "QBCellView.h"
 
 @implementation QBCellView
-{
-    // private variables
-    int _row;
-    int _column;
-    int _state; // Should be changed to board and state should be asked from board.. biatch.
-    UIImageView *_imageView;
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -26,10 +19,11 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame column:(NSInteger)column row:(NSInteger)row
+- (id)initWithFrame:(CGRect)frame column:(NSInteger)column row:(NSInteger)row delegate:(id)delegate
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.cellDelegate = delegate;
         _row = (int)row;
         _column = (int)column;
         _state = 0;
@@ -60,7 +54,13 @@
 {
     
     NSLog(@"Row: %d, Cell: %d", _row, _column);
-    _state++;
+    [self.cellDelegate pressAtColumn:_column row:_row];
+}
+
+- (void)updateWithState:(NSInteger)state
+{
+    //_state++;
+    _state = state;
     if (_state > 4) {
         _state = 0;
     }

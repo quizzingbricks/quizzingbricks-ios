@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "QBCommunicationManager.h"
 
-@interface QBLoginViewController : UIViewController <UITextFieldDelegate, QBLoginComDelegate>
+@interface QBLoginViewController : UIViewController <UITextFieldDelegate, QBLoginComDelegate, QBMeComDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;

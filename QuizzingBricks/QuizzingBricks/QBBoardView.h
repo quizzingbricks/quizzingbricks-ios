@@ -10,4 +10,8 @@
 
 @interface QBBoardView : UIView
 
+@property (strong, nonatomic) NSArray *board;
+
+- (id)initWithFrame:(CGRect)frame delegate:(id)delegate;
+
 @end

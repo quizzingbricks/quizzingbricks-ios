@@ -21,6 +21,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (NSMutableURLRequest *)createRequestWithPost:(NSString *)post endpoint:(NSString *)endpoint token:(NSString *)token
 {
+    NSLog(@"RequestWithPost at %@: %@", endpoint, post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d", (int)[postData length]];
     NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://%@%@", API_URL, endpoint]];
@@ -39,6 +40,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (NSMutableURLRequest *)createRequestWithEndpoint:(NSString *)endpoint token:(NSString *)token
 {
+    NSLog(@"Request at %@", endpoint);
     NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://%@%@", API_URL, endpoint]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -49,6 +51,24 @@ NSString *const API_URL = @"130.240.233.81:8000";
     [request setURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    return request;
+}
+
+- (NSMutableURLRequest *)createRequestWithJSON:(NSData *)JSON endpoint:(NSString *)endpoint token:(NSString *)token
+{
+    NSLog(@"RequestWithJSON at %@: %@", endpoint, JSON);
+    NSString *dataLength = [NSString stringWithFormat:@"%d", (int)[JSON length]];
+    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://%@%@", API_URL, endpoint]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    if (token) {
+        [request addValue:token forHTTPHeaderField:@"token"];
+    }
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:dataLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:JSON];
     return request;
 }
 
@@ -69,6 +89,9 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedRegisterJSON:(NSData *)objectNotation
 {
+    NSLog(@"receivedRegisterJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     if (objectNotation != nil) {
         NSLog(@"Not nil");
@@ -119,6 +142,8 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedLoginJSON:(NSData *)objectNotation
 {
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
@@ -159,19 +184,25 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedFriendsJSON:(NSData *)objectNotation
 {
-    NSLog(@"friendsReceived");
+    NSLog(@"receivedFriendsJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
         [self getFriendsFailedWithError:localError];
     } else {
+        NSLog(@"receivedFriendsJSON else");
         if ([[parsedObject allKeys] containsObject:@"errors"]) {
+            NSLog(@"receivedFriendsJSON else failed");
             [self.friendsDelegate getFriendsFailed];
         } else {
+            NSLog(@"receivedFriendsJSON else else");
+            NSLog(@"%@",parsedObject);
             NSMutableArray *friends = [[NSMutableArray alloc] init];
             for (NSDictionary *friendJSON in [parsedObject objectForKey:@"friends"]) {
-                
-                QBFriend *f = [[QBFriend alloc] initWithUserID:[friendJSON objectForKey:@"u_id"] email:[friendJSON objectForKey:@"email"]];
+                NSLog(@"receivedFriendsJSON: friend: %@",[friendJSON objectForKey:@"email"]);
+                QBFriend *f = [[QBFriend alloc] initWithUserID:[friendJSON objectForKey:@"id"] email:[friendJSON objectForKey:@"email"]];
                 [friends addObject:f];
             }
             NSLog(@"friends assembled");
@@ -189,21 +220,50 @@ NSString *const API_URL = @"130.240.233.81:8000";
 {
     NSLog(@"addFriend");
     NSString *post = [NSString stringWithFormat:@"friend=%@", email];
+    NSLog(@"addFriendpost: %@",post);
     NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/users/me/friends/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
             [self addFriendFailedWithError:error];
         } else {
-            [self receivedFriendsJSON:data];
+            [self responseAddFriend:data];
         }
     }];
+}
+
+- (void)responseAddFriend:(NSData *)objectNotation
+{
+    NSLog(@"responseAddFriend");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSString *testString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"Teststring: %@",testString);
+    if ([testString isEqualToString:@"OK"]) {
+        NSLog(@"responseAddFriend returned OK");
+        [self.friendsDelegate addFriendSucceded];
+    } else {
+        NSLog(@"responseAddFriend DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self getFriendsFailedWithError:localError];
+        } else {
+            NSLog(@"responseAddFriend else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"responseAddFriend else failed");
+                [self.friendsDelegate addFriendFailed];
+            } else {
+                NSLog(@"responseAddFriend no errors");
+            }
+        }
+    }
 }
 
 - (void)addFriendFailedWithError:(NSError *)error
 {
     NSLog(@"addfriend failed");
-    [self.friendsDelegate getFriendsFailed];
+    [self.friendsDelegate addFriendFailed];
 }
 
 #pragma mark - Lobbies
@@ -211,7 +271,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 - (void)getLobbiesWithToken:(NSString *)token
 {
     NSLog(@"getLobbies");
-    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/game/lobby/" token:token];
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/games/lobby/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -224,7 +284,9 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedLobbiesJSON:(NSData *)objectNotation
 {
-    NSLog(@"lobbiesreceived");
+    NSLog(@"receivedLobbiesJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
@@ -232,8 +294,25 @@ NSString *const API_URL = @"130.240.233.81:8000";
     } else {
         NSArray *ls = [parsedObject objectForKey:@"lobbies"];
         NSMutableArray *lobbies = [[NSMutableArray alloc] init];
-        for (NSDictionary *l_id in ls) {
-            [lobbies addObject:[l_id objectForKey:@"l_id"]];
+        for (NSDictionary *lobbyDict in ls) {
+            NSLog(@"lobbyRecieved: %@", [lobbyDict objectForKey:@"l_id"]);
+            NSString *lobbyID = [lobbyDict objectForKey:@"l_id"];
+            NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
+            BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
+            NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
+            NSMutableArray *players = [[NSMutableArray alloc] init];
+            for (NSDictionary *jsonPlayer in jsonPlayers) {
+                NSString *statusString = [jsonPlayer objectForKey:@"status"];
+                if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"accepted"]) {
+                    statusString = @"accepted";
+                } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
+                    statusString = @"waiting";
+                }
+                QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
+                [players addObject:player];
+            }
+            QBLobby *lobby = [[QBLobby alloc] initWithID:lobbyID size:lobbySize isOwner:isOwner players:players];
+            [lobbies addObject:lobby];
         }
         [self.lobbyDelegate lobbies:lobbies];
     }
@@ -249,7 +328,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 - (void)getLobbyWithToken:(NSString *)token lobbyId:(NSString *)l_id
 {
     NSLog(@"getLobby");
-    NSMutableURLRequest *request = [self createRequestWithEndpoint:[NSString stringWithFormat:@"/api/game/lobby/%@/", l_id] token:token];
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:[NSString stringWithFormat:@"/api/games/lobby/%@/", l_id] token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -262,29 +341,39 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedLobbyJSON:(NSData *)objectNotation
 {
-    NSLog(@"lobbyReceived here");
+    NSLog(@"receivedLobbyJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
         [self getLobbyFailedWithError:localError];
     } else {
-        NSLog(@"lobbyRecieved: %@", [parsedObject objectForKey:@"l_id"]);
-        NSInteger lobbySize = [[parsedObject objectForKey:@"size"] integerValue];
-        BOOL isOwner = [[parsedObject objectForKey:@"owner"] boolValue];
-        NSArray *jsonPlayers = [parsedObject objectForKey:@"players"];
-        NSMutableArray *players = [[NSMutableArray alloc] init];
-        for (NSDictionary *jsonPlayer in jsonPlayers) {
-            NSString *statusString = [jsonPlayer objectForKey:@"status"];
-            if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"accepted"]) {
-                statusString = @"accepted";
-            } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
-                statusString = @"waiting";
+        if ([[parsedObject allKeys] containsObject:@"errors"]) {
+            NSLog(@"receivedLobbyJSON else failed");
+            [self.lobbyDelegate getLobbyFailed];
+        } else {
+            NSLog(@"receivedLobbyJSON no errors");
+            NSDictionary *lobbyDict = [parsedObject objectForKey:@"lobby"];
+            NSLog(@"lobbyRecieved: %@", [lobbyDict objectForKey:@"l_id"]);
+            NSString *lobbyID = [lobbyDict objectForKey:@"l_id"];
+            NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
+            BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
+            NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
+            NSMutableArray *players = [[NSMutableArray alloc] init];
+            for (NSDictionary *jsonPlayer in jsonPlayers) {
+                NSString *statusString = [jsonPlayer objectForKey:@"status"];
+                if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"accepted"]) {
+                    statusString = @"accepted";
+                } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
+                    statusString = @"waiting";
+                }
+                QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
+                [players addObject:player];
             }
-            QBPlayer *player = [[QBPlayer alloc] initWithUserID:[jsonPlayer objectForKey:@"u_id"] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
-            [players addObject:player];
+            QBLobby *lobby = [[QBLobby alloc] initWithID:lobbyID size:lobbySize isOwner:isOwner players:players];
+            [self.lobbyDelegate lobby:lobby];
         }
-        QBLobby *lobby = [[QBLobby alloc] initWithSize:lobbySize isOwner:isOwner players:players];
-        [self.lobbyDelegate lobby:lobby];
     }
 }
 
@@ -299,7 +388,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 {
     NSLog(@"createLobby");
     NSString *post = [NSString stringWithFormat:@"size=%d", size];
-    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/game/lobby/create/" token:token];
+    NSMutableURLRequest *request = [self createRequestWithPost:post endpoint:@"/api/games/lobby/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -312,16 +401,21 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedCreatedLobbyJSON:(NSData *)objectNotation
 {
+    NSLog(@"receivedCreatedLobbyJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
         [self createLobbyFailedWithError:localError];
         NSLog(@"error creating lobby");
     } else {
-        NSLog(@"createdLobbyID:%@", [parsedObject objectForKey:@"l_id"]);
-        NSInteger lobbySize = [[parsedObject objectForKey:@"size"] integerValue];
-        BOOL isOwner = [[parsedObject objectForKey:@"owner"] boolValue];
-        NSArray *jsonPlayers = [parsedObject objectForKey:@"players"];
+        NSDictionary *lobbyDict = [parsedObject objectForKey:@"lobby"];
+        NSLog(@"createdLobbyID:%@", [lobbyDict objectForKey:@"l_id"]);
+        NSString *lobbyID = [lobbyDict objectForKey:@"l_id"];
+        NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
+        BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
+        NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
         NSMutableArray *players = [[NSMutableArray alloc] init];
         for (NSDictionary *jsonPlayer in jsonPlayers) {
             NSString *statusString = [jsonPlayer objectForKey:@"status"];
@@ -330,10 +424,10 @@ NSString *const API_URL = @"130.240.233.81:8000";
             } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
                 statusString = @"waiting";
             }
-            QBPlayer *player = [[QBPlayer alloc] initWithUserID:[jsonPlayer objectForKey:@"u_id"] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
+            QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
             [players addObject:player];
         }
-        QBLobby *lobby = [[QBLobby alloc] initWithSize:lobbySize isOwner:isOwner players:players];
+        QBLobby *lobby = [[QBLobby alloc] initWithID:lobbyID size:lobbySize isOwner:isOwner players:players];
         [self.lobbyDelegate createdLobby:lobby];
     }
 }
@@ -343,11 +437,167 @@ NSString *const API_URL = @"130.240.233.81:8000";
     [self.lobbyDelegate createLobbyFailed];
 }
 
+#pragma mark - Invite Friend to Lobby
+
+- (void)inviteFriendWithToken:(NSString *)token lobbyID:(NSString *)l_id friendIDs:(NSArray *)f_ids
+{
+    NSError *localError = nil;
+    NSLog(@"inviteFriendWithToken");
+    NSDictionary *invite = [NSDictionary dictionaryWithObject:f_ids forKey:@"invite"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:invite
+                                                       options:NSJSONWritingPrettyPrinted error:&localError];
+    if (localError != nil) {
+        [self inviteFriendToLobbyFailedWithError:localError];
+    }
+    NSString *jsonString =[[NSString alloc] initWithData:jsonData encoding:NSASCIIStringEncoding];
+    NSLog(@"invite jsondata: %@",jsonString);
+    NSMutableURLRequest *request = [self createRequestWithJSON:jsonData endpoint:[NSString stringWithFormat:@"/api/games/lobby/%@/invite/",l_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self inviteFriendToLobbyFailedWithError:error];
+        } else {
+            [self receivedinviteFriendLobbyJSON:data];
+        }
+    }];
+}
+
+- (void)receivedinviteFriendLobbyJSON:(NSData *)objectNotation
+{
+    NSLog(@"receivedinviteFriendLobbyJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSString *testString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"Teststring: %@",testString);
+    if ([testString isEqualToString:@"OK"]) {
+        NSLog(@"receivedinviteFriendLobbyJSON returned OK");
+        [self.lobbyDelegate inviteFriendSucceded];
+    } else {
+        NSLog(@"receivedinviteFriendLobbyJSON DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self inviteFriendToLobbyFailedWithError:localError];
+        } else {
+            NSLog(@"receivedinviteFriendLobbyJSON else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"receivedinviteFriendLobbyJSON failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.lobbyDelegate inviteFriendFailed];
+            } else {
+                NSLog(@"receivedinviteFriendLobbyJSON failed but no errors");
+            }
+        }
+    }
+}
+
+- (void)inviteFriendToLobbyFailedWithError:(NSError *)error
+{
+    [self.lobbyDelegate inviteFriendFailed];
+}
+
+
+#pragma mark - AcceptInvitation
+
+- (void)acceptInviteWithToken:(NSString *)token lobbyID:(NSString *)l_id
+{
+    NSLog(@"acceptInviteWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:@"" endpoint:[NSString stringWithFormat:@"/api/games/lobby/%@/accept/",l_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self acceptInviteFailedWithError:error];
+        } else {
+            [self acceptInviteJSON:data];
+        }
+    }];
+}
+
+- (void)acceptInviteJSON:(NSData *)objectNotation
+{
+    NSLog(@"acceptInviteJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSString *testString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"Teststring: %@",testString);
+    if ([testString isEqualToString:@"OK"]) {
+        NSLog(@"acceptInviteJSON returned OK");
+        [self.lobbyDelegate acceptInviteSucceeded];
+    } else {
+        NSLog(@"acceptInviteJSON DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self acceptInviteFailedWithError:localError];
+        } else {
+            NSLog(@"acceptInviteJSON else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"acceptInviteJSON failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.lobbyDelegate acceptInviteFailed];
+            } else {
+                NSLog(@"acceptInviteJSON failed but no errors");
+            }
+        }
+    }
+}
+
+- (void)acceptInviteFailedWithError:(NSError *)error
+{
+    [self.lobbyDelegate acceptInviteFailed];
+}
+
+
+# pragma mark - Start Lobby
+
+- (void)startGameWithToken:(NSString *)token lobbyID:(NSString *)l_id
+{
+    NSLog(@"startGameWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:@"" endpoint:[NSString stringWithFormat:@"/api/games/lobby/%@/start/",l_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self startGameFailedWithError:error];
+        } else {
+            [self startGameResponse:data];
+        }
+    }];
+}
+
+- (void)startGameResponse:(NSData *)objectNotation
+{
+    NSLog(@"startGameResponse");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    if ([dataString isEqualToString:@"OK"]) {
+        NSLog(@"startGameResponse returned OK");
+        [self.lobbyDelegate startGameSucceeded];
+    } else {
+        NSError *localError = nil;
+        NSLog(@"startGameResponse DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self startGameFailedWithError:localError];
+        } else {
+            NSLog(@"startGameResponse else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"startGameResponse failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.lobbyDelegate startGameFailed];
+            } else {
+                NSLog(@"startGameResponse failed but no errors");
+            }
+        }
+    }
+}
+
+- (void)startGameFailedWithError:(NSError *)error
+{
+    [self.lobbyDelegate startGameFailed];
+}
+
 #pragma mark - Games
 
 - (void)getGamesWithToken:(NSString *)token{
-    NSLog(@"getGames");
-    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/users/me/activegames/" token:token];
+    NSLog(@"getGamesWithToken");
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/games/" token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -360,23 +610,26 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedGamesJSON:(NSData *)objectNotation
 {
-    NSLog(@"gamesReceived");
+    NSLog(@"receivedGamesJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
         [self gamesFailedWithError:localError];
     } else {
-        NSArray *gs = [parsedObject objectForKey:@"games"];
-        NSMutableArray *games = [[NSMutableArray alloc] init];
-        for (NSDictionary *g in gs) {
-            NSString *g_id = [g objectForKey:@"g_id"];
-            NSLog(@"gID: %@", g_id);
-            NSInteger size = [[g objectForKey:@"size"] integerValue];
-            NSLog(@"size: %ld", (long)size);
-            NSString *status = [g objectForKey:@"status"];
-            NSLog(@"status: %@", g_id);
-            [games addObject:[[QBGame alloc] initWithSize:size gameID:g_id status:status]];
-        }
+        //NSArray *gs = [parsedObject objectForKey:@"games"];
+        //NSMutableArray *games = [[NSMutableArray alloc] init];
+        //for (NSDictionary *g in gs) {
+        //    NSString *g_id = [g objectForKey:@"g_id"];
+        //    NSLog(@"gID: %@", g_id);
+        //    NSInteger size = [[g objectForKey:@"size"] integerValue];
+        //    NSLog(@"size: %ld", (long)size);
+        //    NSString *status = [g objectForKey:@"status"];
+        //    NSLog(@"status: %@", g_id);
+        //    [games addObject:[[QBGame alloc] initWithSize:size gameID:g_id status:status]];
+        //}
+        NSArray *games = [parsedObject objectForKey:@"games"];
         [self.gameDelegate games:games];
     }
 }
@@ -389,8 +642,8 @@ NSString *const API_URL = @"130.240.233.81:8000";
 #pragma mark - Game
 
 - (void)getGameWithToken:(NSString *)token gameId:(NSString *)g_id{
-    NSLog(@"getGame");
-    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/game/%@/" token:token];
+    NSLog(@"getGameWithToken");
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:[NSString stringWithFormat:@"/api/games/%@/",g_id] token:token];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
@@ -403,7 +656,9 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 - (void)receivedGameJSON:(NSData *)objectNotation
 {
-    NSLog(@"gameReceived");
+    NSLog(@"receivedGameJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
     NSError *localError = nil;
     NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
     if (localError != nil) {
@@ -428,6 +683,86 @@ NSString *const API_URL = @"130.240.233.81:8000";
     [self.gameDelegate getGameFailed];
 }
 
+#pragma mark - Play
 
+- (void)playMoveWithToken:(NSString *)token gameID:(NSString *)g_id xCoord:(NSInteger)x yCoord:(NSInteger)y
+{
+    NSLog(@"acceptInviteWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:[NSString stringWithFormat:@"x=%d&y=%d",(int)x,(int)y] endpoint:[NSString stringWithFormat:@"/api/games/%@/play/move/",g_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self playMoveFailedWithError:error];
+        } else {
+            [self playMoveResponse:data];
+        }
+    }];
+}
+
+- (void)playMoveResponse:(NSData *)objectNotation
+{
+    NSLog(@"playMoveResponse");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSString *testString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"Teststring: %@",testString);
+    if ([testString isEqualToString:@"OK"]||[testString isEqualToString:@""]) {
+        NSLog(@"playMoveResponse returned OK");
+        [self.playDelegate playMoveSucceded];
+    } else {
+        NSLog(@"playMoveResponse DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self playMoveFailedWithError:localError];
+        } else {
+            NSLog(@"playMoveResponse else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"playMoveResponse failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.playDelegate playMoveFailed];
+            } else {
+                NSLog(@"playMoveResponse failed but no errors");
+            }
+        }
+    }
+}
+
+- (void)playMoveFailedWithError:(NSError *)error
+{
+    [self.playDelegate playMoveFailed];
+}
+
+#pragma mark - Me
+- (void)getMeWithToken:(NSString *)token{
+    NSLog(@"getMeWithToken");
+    NSMutableURLRequest *request = [self createRequestWithEndpoint:@"/api/users/me/" token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self getMeFailedWithError:error];
+        } else {
+            [self receivedMeJSON:data];
+        }
+    }];
+}
+
+- (void)receivedMeJSON:(NSData *)objectNotation
+{
+    NSLog(@"receivedMeJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+    if (localError != nil) {
+        [self getMeFailedWithError:localError];
+    } else {
+        [self.meDelegate returnMeWithUserID:[parsedObject objectForKey:@"id"] email:[parsedObject objectForKey:@"email"]];
+    }
+}
+
+- (void)getMeFailedWithError:(NSError *)error
+{
+    [self.meDelegate getMeFailed];
+}
 
 @end

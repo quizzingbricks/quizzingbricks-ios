@@ -7,7 +7,10 @@
 //
 
 #import "QBGameViewController.h"
+#import "QBDataManager.h"
+#import "QBCommunicationManager.h"
 #import "QBBoardView.h"
+#import "QBGame.h"
 
 @interface QBGameViewController ()
 
@@ -28,10 +31,10 @@
 {
     [super viewDidLoad];
     
-    NSInteger numberOfCells = 20;
+    NSInteger numberOfCells = 8;
     NSInteger size = numberOfCells*50;
     
-    QBBoardView *gameView = [[QBBoardView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x+10, self.view.bounds.origin.y+10, size, size)];
+    QBBoardView *gameView = [[QBBoardView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x+10, self.view.bounds.origin.y+10, size, size) delegate:self];
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y+100, self.view.bounds.size.width, self.view.bounds.size.height-100)];
     [scrollView setContentSize:CGSizeMake(size+20, size+20)];
     [scrollView addSubview:gameView];
@@ -58,6 +61,65 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
+
+- (void)fetchGame
+{
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.gameDelegate = self;
+    [cm getGameWithToken:dm.token gameId:self.gameID];
+}
+
+- (void)games:(NSArray *)gameList
+{
+    
+}
+
+- (void)getGamesFailed
+{
+    
+}
+
+- (void)game:(QBGame *)g
+{
+    NSLog(@"Gameview received game!");
+    self.game = g;
+    // UPDATE BOARD
+    for (NSNumber *n in self.game.board) {
+        //NSLog(@"n: ",n);
+    }
+}
+
+- (void)getGameFailed
+{
+    NSLog(@"Get Game Failed");
+}
+
+- (void)playMoveSucceded
+{
+    // Not used
+    NSLog(@"playMoveSucceded");
+}
+
+- (void)playMoveFailed
+{
+    // Not used
+    NSLog(@"playMoveFailed");
+}
+
+- (void) pressAtColumn:(NSInteger)column row:(NSInteger)row
+{
+    NSLog(@"Press at column %ld row %ld", (long)column, (long)row);
+    //NSInteger index = row*8+column;
+    
+    QBDataManager *dm = [QBDataManager sharedManager];
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.playDelegate = self;
+    [cm playMoveWithToken:dm.token gameID:self.gameID xCoord:column yCoord:row];
+    
+    //[[self.gameView.board objectAtIndex:index] updateWithState:2];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
