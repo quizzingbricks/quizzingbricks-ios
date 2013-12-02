@@ -12,5 +12,7 @@
 + (QBDataManager *)sharedManager;
 
 @property (strong, nonatomic) NSString *token;
+@property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *u_id;
 
 @end
