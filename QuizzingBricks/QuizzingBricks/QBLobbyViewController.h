@@ -15,5 +15,6 @@
 
 @property (strong, nonatomic) QBLobby *lobby;
 @property (strong, nonatomic) NSString *lobbyID;
+@property (nonatomic) BOOL isOwner;
 
 @end

@@ -26,6 +26,7 @@
     if (self) {
         // Custom initialization
         self.lobby = nil;
+        self.isOwner = NO;
     }
     return self;
 }
@@ -75,6 +76,11 @@
     self.lobby = l;
     dispatch_async(dispatch_get_main_queue(),
                    ^{
+                       if (self.lobby.size == 2) {
+                           self.navigationItem.title = @"Lobby Two Player";
+                       } else {
+                           self.navigationItem.title = @"Lobby Four Player";
+                       }
                        [self.tableView reloadData];
                    });
     
@@ -92,19 +98,64 @@
      // Not used
 }
 
+- (void)inviteFriendSucceded
+{
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.lobbyDelegate = self;
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [cm getLobbyWithToken:dm.token lobbyId:self.lobbyID];
+}
+
+- (void)inviteFriendFailed
+{
+    NSLog(@"QBLobbyView inviteFriendFailed");
+}
+
+- (void)acceptInviteSucceeded
+{
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.lobbyDelegate = self;
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [cm getLobbyWithToken:dm.token lobbyId:self.lobbyID];
+}
+
+- (void)acceptInviteFailed
+{
+    NSLog(@"accept failed");
+}
+
+- (void)startGameSucceeded
+{
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.lobbyDelegate = self;
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [cm getLobbyWithToken:dm.token lobbyId:self.lobbyID];
+}
+
+- (void)startGameFailed
+{
+    NSLog(@"startGame failed");
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    if (self.lobby == nil) {
+        return 0;
+    }
+    if (self.lobby.isOwner) {
+        return 2;
+    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0) {
-        //if owner of lobby only return 0..
+    if (self.lobby.isOwner && (section == 0)) {
         return 2;
     }
     return [self.lobby.players count];
@@ -112,7 +163,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    
+    if (self.lobby.isOwner && (indexPath.section == 0)) {
         if (indexPath.row == 0) {
             static NSString *CellIdentifier = @"AddFriendCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -130,13 +182,43 @@
         return cell;
     }
     
+    QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
+    QBDataManager *dm = [QBDataManager sharedManager];
+    if (!self.lobby.isOwner && ([player.userID integerValue] == [dm.u_id integerValue])) {
+        NSLog(@"Not owner and this is mine!");
+        static NSString *CellIdentifier = @"NonOwnerCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
+        titleLabel.text = [NSString stringWithFormat:@"%@ You",player.userID];
+        
+        UILabel *emailLabel = (UILabel *)[cell viewWithTag:101];
+        emailLabel.text = player.email;
+        
+        if ([player.status isEqualToString:@"accepted"]) {
+            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            UILabel *acceptLabel = (UILabel *)[cell viewWithTag:102];
+            acceptLabel.text = @"";
+        } else {
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+            UILabel *acceptLabel = (UILabel *)[cell viewWithTag:102];
+            acceptLabel.text = @"Accept";
+        }
+        
+        return cell;
+    }
+    
     static NSString *CellIdentifier = @"PlayerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    
-    QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
-    [cell.textLabel setText:player.userID];
+    if ([player.userID integerValue] == [dm.u_id integerValue] ) {
+        // Only comes here if we're owner
+        [cell.textLabel setText:[NSString stringWithFormat:@"%@ You",player.userID]];
+    } else if (indexPath.row == 0) {
+        [cell.textLabel setText:[NSString stringWithFormat:@"%@ Owner",player.userID]];
+    } else {
+        [cell.textLabel setText:player.userID];
+    }
     [cell.detailTextLabel setText:player.email];
     NSLog(@"player status: %@ %@", player.status, player.email);
     if ([player.status isEqualToString:@"accepted"]) {
@@ -156,13 +238,41 @@
     return @"";
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.lobby.isOwner && indexPath.section==0 && indexPath.row == 1) {
+        NSLog(@"Fill remainig slots with randoms");
+        QBDataManager *dm = [QBDataManager sharedManager];
+        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+        cm.lobbyDelegate = self;
+        [cm startGameWithToken:dm.token lobbyID:self.lobbyID];
+    }
+    if (!self.lobby.isOwner) {
+        QBPlayer *player = [self.lobby.players objectAtIndex:indexPath.row];
+        //UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        QBDataManager *dm = [QBDataManager sharedManager];
+        
+        if (([player.userID integerValue] == [dm.u_id integerValue]) && [player.status isEqualToString:@"waiting"]) {
+            NSLog(@"send magic accept message");
+            QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+            cm.lobbyDelegate = self;
+            [cm acceptInviteWithToken:dm.token lobbyID:self.lobbyID];
+        }
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (IBAction)inviteDone:(UIStoryboardSegue *)segue
 {
+    NSLog(@"inviteDone");
     QBDataManager *dm = [QBDataManager sharedManager];
     QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-    cm.friendsDelegate = self;
+    cm.lobbyDelegate = self;
     QBInviteFriendViewController *ifvc = segue.sourceViewController;
-    //ifvc.invitation
+    NSLog(@"invitation: %@ %@ %@", ifvc.invitation, self.lobbyID, self.lobby.lobbyID);
+    [cm inviteFriendWithToken:dm.token lobbyID:self.lobbyID friendIDs:ifvc.invitation];
     
     //[cm addFriendWithToken:dm.token email:if.email];
 }
