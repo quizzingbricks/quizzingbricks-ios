@@ -8,8 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol QBCellDelegate <NSObject>
+
+- (void) pressAtColumn:(NSInteger)column row:(NSInteger)row;
+
+@end
+
 @interface QBCellView : UIView
 
-- (id) initWithFrame:(CGRect)frame column:(NSInteger)column row:(NSInteger)row; // board:(SHCReversiBoard*)board;
+{
+    // private variables
+    int _row;
+    int _column;
+    UIImageView *_imageView;
+    id <QBCellDelegate> _cellDelegate;
+}
+
+- (id) initWithFrame:(CGRect)frame column:(NSInteger)column row:(NSInteger)row delegate:(id)delegate;
+- (void)updateWithState:(NSInteger)state;
+
+@property (nonatomic) NSInteger state;
+@property (strong,nonatomic) id cellDelegate;
 
 @end
