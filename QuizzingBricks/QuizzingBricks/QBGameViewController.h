@@ -7,13 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBCommunicationManager.h"
+#import "QBCellView.h"
 
 @class QBBoardView;
+@class QBGame;
 
-@interface QBGameViewController : UIViewController <UIScrollViewDelegate>
+@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 @property (weak, nonatomic) QBBoardView *gameView;
+@property (strong, nonatomic) NSString *gameID;
+@property (strong, nonatomic) QBGame *game;
+
 //@property (weak, nonatomic) IBOutlet UIScrollView *gameScrollView;
 
 @end
