@@ -73,6 +73,11 @@
     NSLog(@"getFriendsFailed..");
 }
 
+- (void)addFriendSucceded
+{
+    [self getFriendsList];
+}
+
 - (void)addFriendFailed
 {
     NSLog(@"addFriendFailed..");
