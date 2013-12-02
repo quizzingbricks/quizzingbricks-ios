@@ -118,6 +118,36 @@
     
 }
 
+- (void)inviteFriendSucceded
+{
+    
+}
+
+- (void)inviteFriendFailed
+{
+    
+}
+
+- (void)acceptInviteSucceeded
+{
+    
+}
+
+- (void)acceptInviteFailed
+{
+    
+}
+
+- (void)startGameSucceeded
+{
+    
+}
+
+- (void)startGameFailed
+{
+    
+}
+
 #pragma mark - Table view data source
 
 /*
