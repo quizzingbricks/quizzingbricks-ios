@@ -11,19 +11,22 @@
 
 @implementation QBBoardView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        for (int x = 0; x < 20; x++) {
-            for (int y = 0; y < 20; y++) {
+        NSMutableArray *mutableBoard = [[NSMutableArray alloc] init];
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 float x_cord = x*50;
                 float y_cord = y*50;
-                QBCellView *cell = [[QBCellView alloc] initWithFrame:CGRectMake(x_cord, y_cord, 50, 50) column:x row:y];
+                QBCellView *cell = [[QBCellView alloc] initWithFrame:CGRectMake(x_cord, y_cord, 50, 50) column:x row:y delegate:delegate];
                 [self addSubview:cell];
+                [mutableBoard addObject:cell];
             }
         }
+        self.board = mutableBoard;
     }
     return self;
 }
