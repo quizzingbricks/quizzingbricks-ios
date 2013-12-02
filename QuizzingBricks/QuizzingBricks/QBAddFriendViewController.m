@@ -46,6 +46,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"ReturnInput"]) {
+        NSLog(@"FriendEmail:%@",[self.emailInput text]);
         self.email = self.emailInput.text;
     }
 }
