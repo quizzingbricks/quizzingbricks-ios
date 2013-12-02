@@ -349,24 +349,31 @@ NSString *const API_URL = @"130.240.233.81:8000";
     if (localError != nil) {
         [self getLobbyFailedWithError:localError];
     } else {
-        NSDictionary *lobbyDict = [parsedObject objectForKey:@"lobby"];
-        NSLog(@"lobbyRecieved: %@", [lobbyDict objectForKey:@"l_id"]);
-        NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
-        BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
-        NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
-        NSMutableArray *players = [[NSMutableArray alloc] init];
-        for (NSDictionary *jsonPlayer in jsonPlayers) {
-            NSString *statusString = [jsonPlayer objectForKey:@"status"];
-            if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"accepted"]) {
-                statusString = @"accepted";
-            } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
-                statusString = @"waiting";
+        if ([[parsedObject allKeys] containsObject:@"errors"]) {
+            NSLog(@"receivedLobbyJSON else failed");
+            [self.lobbyDelegate getLobbyFailed];
+        } else {
+            NSLog(@"receivedLobbyJSON no errors");
+            NSDictionary *lobbyDict = [parsedObject objectForKey:@"lobby"];
+            NSLog(@"lobbyRecieved: %@", [lobbyDict objectForKey:@"l_id"]);
+            NSString *lobbyID = [lobbyDict objectForKey:@"l_id"];
+            NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
+            BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
+            NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
+            NSMutableArray *players = [[NSMutableArray alloc] init];
+            for (NSDictionary *jsonPlayer in jsonPlayers) {
+                NSString *statusString = [jsonPlayer objectForKey:@"status"];
+                if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"accepted"]) {
+                    statusString = @"accepted";
+                } else if ([[jsonPlayer objectForKey:@"status"] isEqualToString:@"waiting"]) {
+                    statusString = @"waiting";
+                }
+                QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
+                [players addObject:player];
             }
-            QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
-            [players addObject:player];
+            QBLobby *lobby = [[QBLobby alloc] initWithID:lobbyID size:lobbySize isOwner:isOwner players:players];
+            [self.lobbyDelegate lobby:lobby];
         }
-        QBLobby *lobby = [[QBLobby alloc] initWithSize:lobbySize isOwner:isOwner players:players];
-        [self.lobbyDelegate lobby:lobby];
     }
 }
 
@@ -405,6 +412,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
     } else {
         NSDictionary *lobbyDict = [parsedObject objectForKey:@"lobby"];
         NSLog(@"createdLobbyID:%@", [lobbyDict objectForKey:@"l_id"]);
+        NSString *lobbyID = [lobbyDict objectForKey:@"l_id"];
         NSInteger lobbySize = [[lobbyDict objectForKey:@"size"] integerValue];
         BOOL isOwner = [[lobbyDict objectForKey:@"owner"] boolValue];
         NSArray *jsonPlayers = [lobbyDict objectForKey:@"players"];
@@ -419,7 +427,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
             QBPlayer *player = [[QBPlayer alloc] initWithUserID:[[jsonPlayer objectForKey:@"u_id"] stringValue] email:[jsonPlayer objectForKey:@"u_mail"] status:statusString];
             [players addObject:player];
         }
-        QBLobby *lobby = [[QBLobby alloc] initWithSize:lobbySize isOwner:isOwner players:players];
+        QBLobby *lobby = [[QBLobby alloc] initWithID:lobbyID size:lobbySize isOwner:isOwner players:players];
         [self.lobbyDelegate createdLobby:lobby];
     }
 }
@@ -489,6 +497,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 
 
 #pragma mark - AcceptInvitation
+
 - (void)acceptInviteWithToken:(NSString *)token lobbyID:(NSString *)l_id
 {
     NSLog(@"acceptInviteWithToken");
@@ -672,6 +681,55 @@ NSString *const API_URL = @"130.240.233.81:8000";
 - (void)getGameFailedWithError:(NSError *)error
 {
     [self.gameDelegate getGameFailed];
+}
+
+#pragma mark - Play
+
+- (void)playMoveWithToken:(NSString *)token gameID:(NSString *)g_id xCoord:(NSInteger)x yCoord:(NSInteger)y
+{
+    NSLog(@"acceptInviteWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:[NSString stringWithFormat:@"x=%d&y=%d",(int)x,(int)y] endpoint:[NSString stringWithFormat:@"/api/games/%@/play/move/",g_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self playMoveFailedWithError:error];
+        } else {
+            [self playMoveResponse:data];
+        }
+    }];
+}
+
+- (void)playMoveResponse:(NSData *)objectNotation
+{
+    NSLog(@"playMoveResponse");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSString *testString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"Teststring: %@",testString);
+    if ([testString isEqualToString:@"OK"]||[testString isEqualToString:@""]) {
+        NSLog(@"playMoveResponse returned OK");
+        [self.playDelegate playMoveSucceded];
+    } else {
+        NSLog(@"playMoveResponse DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self playMoveFailedWithError:localError];
+        } else {
+            NSLog(@"playMoveResponse else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"playMoveResponse failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.playDelegate playMoveFailed];
+            } else {
+                NSLog(@"playMoveResponse failed but no errors");
+            }
+        }
+    }
+}
+
+- (void)playMoveFailedWithError:(NSError *)error
+{
+    [self.playDelegate playMoveFailed];
 }
 
 #pragma mark - Me
