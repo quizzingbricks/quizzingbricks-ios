@@ -11,6 +11,7 @@
 #import "QBGame.h"
 #import "QBPlayer.h"
 #import "QBFriend.h"
+#import "QBQuestion.h"
 
 @implementation QBCommunicationManager
 

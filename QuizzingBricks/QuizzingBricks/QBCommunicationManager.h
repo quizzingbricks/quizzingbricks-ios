@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QBLobby.h"
-#import "QBGame.h"
+
+@class QBLobby;
+@class QBGame;
+@class QBQuestion;
 
 
 @protocol QBRegisterComDelegate <NSObject>
@@ -58,6 +60,15 @@
 
 @end
 
+@protocol QBQuestionDelegate <NSObject>
+
+- (void)receivedQuestion:(QBQuestion *)question;
+- (void)questionFailed;
+- (void)answerSucceded;
+- (void)answerFailed;
+
+@end
+
 @protocol QBFriendsComDelegate <NSObject>
 
 - (void)returnFriends:(NSArray *)friends;
@@ -82,6 +93,7 @@
     id <QBLobbyComDelegate> _lobbyDelegate;
     id <QBGameComDelegate> _gameDelegate;
     id <QBPlayDelegate> _playDelegate;
+    id <QBQuestionDelegate> _questionDelegate;
     id <QBFriendsComDelegate> _friendsDelegate;
     id <QBMeComDelegate> _meDelegate;
 }
@@ -90,6 +102,7 @@
 @property (nonatomic, strong) id lobbyDelegate;
 @property (nonatomic, strong) id gameDelegate;
 @property (nonatomic, strong) id playDelegate;
+@property (nonatomic, strong) id questionDelegate;
 @property (nonatomic, strong) id friendsDelegate;
 @property (nonatomic, strong) id meDelegate;
 
