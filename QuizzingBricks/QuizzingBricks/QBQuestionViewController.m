@@ -19,6 +19,8 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.question = nil;
+        self.answer = -1;
     }
     return self;
 }
