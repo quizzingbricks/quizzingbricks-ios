@@ -108,6 +108,37 @@
     NSLog(@"playMoveFailed");
 }
 
+- (void)receivedQuestion:(QBQuestion *)question
+{
+    // Not used
+    NSLog(@"receivedQuestion");
+    
+    QBQuestionViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"QuestionNav"];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    vc.question = question;
+    [self presentViewController:vc animated:YES completion:Nil];
+}
+
+- (void)questionFailed
+{
+    // Not used
+    NSLog(@"questionFailed");
+}
+
+- (void)answerSucceded
+{
+    // Not used
+    NSLog(@"answerSucceded");
+}
+
+- (void)answerFailed
+{
+    // Not used
+    NSLog(@"answerFailed");
+}
+
+
 - (void) pressAtColumn:(NSInteger)column row:(NSInteger)row
 {
     NSLog(@"Press at column %ld row %ld", (long)column, (long)row);
@@ -118,12 +149,6 @@
     //cm.playDelegate = self;
     //[cm playMoveWithToken:dm.token gameID:self.gameID xCoord:column yCoord:row];
     
-    
-    QBQuestionViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"QuestionNav"];
-    vc.modalPresentationStyle = UIModalPresentationFullScreen;
-    vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self presentViewController:vc animated:YES completion:Nil];
-    
     //[[self.gameView.board objectAtIndex:index] updateWithState:2];
 }
 
@@ -131,10 +156,10 @@
 {
     //[self dismissViewControllerAnimated:YES completion:nil];
     NSLog(@"question to game cancel");
-    /*if ([[segue identifier] isEqualToString:@"CancelCreate"]) {
-        [self dismissViewControllerAnimated: YES completion:NULL];
-        NSLog(@"cancelCreateDismiss");
-    }*/
+    if ([[segue identifier] isEqualToString:@"CancelQuestion"]) {
+        //[self dismissViewControllerAnimated: YES completion:NULL];
+        NSLog(@"CancelQuestion");
+    }
 }
 
 - (void)didReceiveMemoryWarning

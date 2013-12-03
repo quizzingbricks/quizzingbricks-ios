@@ -13,7 +13,7 @@
 @class QBBoardView;
 @class QBGame;
 
-@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBCellDelegate>
+@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBQuestionDelegate, QBCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 @property (weak, nonatomic) QBBoardView *gameView;
