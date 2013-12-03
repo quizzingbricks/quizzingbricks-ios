@@ -552,28 +552,62 @@
                     <navigationItem key="navigationItem" id="glj-7d-1PE"/>
                     <connections>
                         <outlet property="headerLabel" destination="rP8-eJ-4qj" id="BkJ-0A-YUr"/>
-                        <segue destination="N51-Wg-AHY" kind="push" id="oYg-8Q-9cK"/>
+                        <segue destination="N51-Wg-AHY" kind="modal" id="oYg-8Q-9cK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="unI-7i-7Qj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2606" y="918"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Question View Controller-->
         <scene sceneID="YzN-w2-dCR">
             <objects>
-                <tableViewController id="6Da-VX-taY" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vjn-0r-K4e">
+                <tableViewController storyboardIdentifier="QuestionView" id="6Da-VX-taY" customClass="QBQuestionViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="133" sectionHeaderHeight="22" sectionFooterHeight="22" id="vjn-0r-K4e">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="c52-AM-Dw2">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="QuestionCell" rowHeight="133" id="c52-AM-Dw2">
+                                <rect key="frame" x="0.0" y="86" width="320" height="133"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c52-AM-Dw2" id="TRq-Xz-fhe">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="132"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="296" translatesAutoresizingMaskIntoConstraints="NO" id="CrX-1m-Wlz">
+                                            <rect key="frame" x="12" y="0.0" width="296" height="132"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <attributedString key="attributedText">
+                                                <fragment>
+                                                    <string key="content">This is an attemt at a very long text that should represent a question. Now questions are famous for being notoriously long sometimes and short and to the point at other times. Is green yellow?</string>
+                                                    <attributes>
+                                                        <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AnswerCell" textLabel="7IR-HF-ubt" rowHeight="44" style="IBUITableViewCellStyleDefault" id="qUx-Vw-LDs">
+                                <rect key="frame" x="0.0" y="219" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qUx-Vw-LDs" id="CRs-jg-7dn">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="A slightly long answer. 123 123 12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7IR-HF-ubt">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -582,9 +616,16 @@
                             <outlet property="delegate" destination="6Da-VX-taY" id="61L-XA-Tpx"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="GFk-dR-e5x"/>
+                    <navigationItem key="navigationItem" id="GFk-dR-e5x">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qWh-S1-hva">
+                            <connections>
+                                <segue destination="RCg-JU-E74" kind="unwind" unwindAction="cancel:" id="3q7-OO-ZQZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zbz-nU-dNX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="RCg-JU-E74" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3663" y="918"/>
         </scene>
@@ -836,7 +877,7 @@
         <!--Navigation Controller-->
         <scene sceneID="MWb-zr-hwd">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N51-Wg-AHY" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="QuestionNav" automaticallyAdjustsScrollViewInsets="NO" id="N51-Wg-AHY" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="RQD-pm-QGo"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qEH-ya-cuA">

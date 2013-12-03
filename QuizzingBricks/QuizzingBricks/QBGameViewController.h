@@ -22,4 +22,6 @@
 
 //@property (weak, nonatomic) IBOutlet UIScrollView *gameScrollView;
 
+- (IBAction)cancel:(UIStoryboardSegue *)segue;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "QBGameViewController.h"
+#import "QBQuestionViewController.h"
 #import "QBDataManager.h"
 #import "QBCommunicationManager.h"
 #import "QBBoardView.h"
@@ -112,14 +113,29 @@
     NSLog(@"Press at column %ld row %ld", (long)column, (long)row);
     //NSInteger index = row*8+column;
     
-    QBDataManager *dm = [QBDataManager sharedManager];
-    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
-    cm.playDelegate = self;
-    [cm playMoveWithToken:dm.token gameID:self.gameID xCoord:column yCoord:row];
+    //QBDataManager *dm = [QBDataManager sharedManager];
+    //QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    //cm.playDelegate = self;
+    //[cm playMoveWithToken:dm.token gameID:self.gameID xCoord:column yCoord:row];
+    
+    
+    QBQuestionViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"QuestionNav"];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:vc animated:YES completion:Nil];
     
     //[[self.gameView.board objectAtIndex:index] updateWithState:2];
 }
 
+- (IBAction)cancel:(UIStoryboardSegue *)segue
+{
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"question to game cancel");
+    /*if ([[segue identifier] isEqualToString:@"CancelCreate"]) {
+        [self dismissViewControllerAnimated: YES completion:NULL];
+        NSLog(@"cancelCreateDismiss");
+    }*/
+}
 
 - (void)didReceiveMemoryWarning
 {
