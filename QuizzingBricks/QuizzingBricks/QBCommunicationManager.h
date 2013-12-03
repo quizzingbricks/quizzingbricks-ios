@@ -117,6 +117,8 @@
 - (void)getGamesWithToken:(NSString *)token;
 - (void)getGameWithToken:(NSString *)token gameId:(NSString *)g_id;
 - (void)playMoveWithToken:(NSString *)token gameID:(NSString *)g_id xCoord:(NSInteger)x yCoord:(NSInteger)y;
+- (void)getQuestionWithToken:(NSString *)token gameId:(NSString *)g_id;
+- (void)sendAnswerWithToken:(NSString *)token gameId:(NSString *)g_id answer:(NSInteger)answer;
 - (void)getFriendsWithToken:(NSString *)token;
 - (void)addFriendWithToken:(NSString *)token email:(NSString *)email;
 - (void)getMeWithToken:(NSString *)token;
