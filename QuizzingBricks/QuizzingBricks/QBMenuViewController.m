@@ -49,6 +49,7 @@
 
 - (IBAction)cancel:(UIStoryboardSegue *)segue
 {
+    //[self dismissViewControllerAnimated:YES completion:nil];
     if ([[segue identifier] isEqualToString:@"CancelCreate"]) {
         [self dismissViewControllerAnimated: YES completion:NULL];
         NSLog(@"cancelCreateDismiss");
