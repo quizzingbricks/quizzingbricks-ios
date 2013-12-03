@@ -10,6 +10,7 @@
 		D400B06E18213EAD00423568 /* QBDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D400B06D18213EAD00423568 /* QBDataManager.m */; };
 		D40C5C54182A44460082BA32 /* QBCreateGameSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */; };
 		D41FB6B4184DD65C00535C77 /* QBQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D41FB6B3184DD65C00535C77 /* QBQuestionViewController.m */; };
+		D41FB6B7184DDE4600535C77 /* QBQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = D41FB6B6184DDE4600535C77 /* QBQuestion.m */; };
 		D4325B4E183229AE008AEF13 /* QBPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D4325B4D183229AE008AEF13 /* QBPlayer.m */; };
 		D4325B5118322BAF008AEF13 /* QBLobbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4325B5018322BAF008AEF13 /* QBLobbyViewController.m */; };
 		D4325B541834C77F008AEF13 /* QBFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D4325B531834C77F008AEF13 /* QBFriendsViewController.m */; };
@@ -68,6 +69,8 @@
 		D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCreateGameSizeViewController.m; sourceTree = "<group>"; };
 		D41FB6B2184DD65C00535C77 /* QBQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBQuestionViewController.h; sourceTree = "<group>"; };
 		D41FB6B3184DD65C00535C77 /* QBQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBQuestionViewController.m; sourceTree = "<group>"; };
+		D41FB6B5184DDE4600535C77 /* QBQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBQuestion.h; sourceTree = "<group>"; };
+		D41FB6B6184DDE4600535C77 /* QBQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBQuestion.m; sourceTree = "<group>"; };
 		D4325B4C183229AE008AEF13 /* QBPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPlayer.h; sourceTree = "<group>"; };
 		D4325B4D183229AE008AEF13 /* QBPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPlayer.m; sourceTree = "<group>"; };
 		D4325B4F18322BAF008AEF13 /* QBLobbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBLobbyViewController.h; sourceTree = "<group>"; };
@@ -223,6 +226,8 @@
 				D4BCBBC91831356300717D3D /* QBLobby.m */,
 				D474737B183BFD1C00465EAC /* QBGame.h */,
 				D474737C183BFD1C00465EAC /* QBGame.m */,
+				D41FB6B5184DDE4600535C77 /* QBQuestion.h */,
+				D41FB6B6184DDE4600535C77 /* QBQuestion.m */,
 				D4325B4C183229AE008AEF13 /* QBPlayer.h */,
 				D4325B4D183229AE008AEF13 /* QBPlayer.m */,
 				D4325B551834CF50008AEF13 /* QBFriend.h */,
@@ -394,6 +399,7 @@
 				D4CD43781803F55700E4FEBF /* QBRegisterViewController.m in Sources */,
 				D46CF4B117ECB333000BDD43 /* QBLoginViewController.m in Sources */,
 				D43ED21817EF25A10082BEFC /* QBGameViewController.m in Sources */,
+				D41FB6B7184DDE4600535C77 /* QBQuestion.m in Sources */,
 				D46CF4A717ECB333000BDD43 /* main.m in Sources */,
 				D4E62CEA18034679002F0CDA /* QBCellView.m in Sources */,
 				D40C5C54182A44460082BA32 /* QBCreateGameSizeViewController.m in Sources */,
