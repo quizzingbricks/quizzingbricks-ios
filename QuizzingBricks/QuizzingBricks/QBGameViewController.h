@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "QBCommunicationManager.h"
+#import "QBQuestionViewController.h"
 #import "QBCellView.h"
 
 @class QBBoardView;
 @class QBGame;
 
-@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBQuestionDelegate, QBCellDelegate>
+@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBQuestionDelegate, QBCellDelegate, QBAnswerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 @property (weak, nonatomic) QBBoardView *gameView;
