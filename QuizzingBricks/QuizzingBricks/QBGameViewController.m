@@ -41,18 +41,22 @@
     [(UILabel *)[self.view viewWithTag:102] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:103] setHidden:YES];
     [(UIImageView *)[self.view viewWithTag:110] setHidden:YES];
+    [(UIImageView *)[self.view viewWithTag:111] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:201] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:202] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:203] setHidden:YES];
     [(UIImageView *)[self.view viewWithTag:210] setHidden:YES];
+    [(UIImageView *)[self.view viewWithTag:211] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:301] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:302] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:303] setHidden:YES];
     [(UIImageView *)[self.view viewWithTag:310] setHidden:YES];
+    [(UIImageView *)[self.view viewWithTag:311] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:401] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:402] setHidden:YES];
     [(UILabel *)[self.view viewWithTag:403] setHidden:YES];
     [(UIImageView *)[self.view viewWithTag:410] setHidden:YES];
+    [(UIImageView *)[self.view viewWithTag:411] setHidden:YES];
     [self.view setNeedsDisplay];
     
     self.title = @"QuizzingBricks";
@@ -150,6 +154,12 @@
                                    [[self.gameView.board objectAtIndex:i] update];
                                });
             }
+        } else {
+            dispatch_async(dispatch_get_main_queue(),
+                           ^{
+                               [[self.gameView.board objectAtIndex:i] setState:0];
+                               [[self.gameView.board objectAtIndex:i] update];
+                           });
         }
     }
     
@@ -163,19 +173,31 @@
         }
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           
-                           UILabel *status = (UILabel *)[self.view viewWithTag:101];
-                           [status setText:[NSString stringWithFormat:@"%d",(int)self.game.yellowColor.state]];
                            UILabel *score = (UILabel *)[self.view viewWithTag:102];
-                           [score setText:[NSString stringWithFormat:@"%d",(int)self.game.yellowColor.score]];
+                           [score setText:[NSString stringWithFormat:@"Score: %d",(int)self.game.yellowColor.score]];
                            UILabel *email = (UILabel *)[self.view viewWithTag:103];
-                           [email setText:[NSString stringWithFormat:@"%@@notvalid.email",self.game.yellowColor.userID]];
-                           
-                           [status setHidden:NO];
+                           [email setText:self.game.yellowColor.email];
                            [score setHidden:NO];
                            [email setHidden:NO];
                            UIImageView *image = (UIImageView *)[self.view viewWithTag:110];
                            [image setHidden:NO];
+                           UIImageView *imageStatus = (UIImageView *)[self.view viewWithTag:111];
+                           switch (self.game.yellowColor.state) {
+                               case 0:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_yellow.png"]];
+                                   break;
+                               case 1:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 2:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 3:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_green.png"]];
+                                   break;
+                               default:
+                                   break;
+                           }
                            
                            [self.view setNeedsDisplay];
                        });
@@ -186,19 +208,32 @@
         }
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           
-                           UILabel *status = (UILabel *)[self.view viewWithTag:201];
-                           [status setText:[NSString stringWithFormat:@"%d",(int)self.game.redColor.state]];
                            UILabel *score = (UILabel *)[self.view viewWithTag:202];
-                           [score setText:[NSString stringWithFormat:@"%d",(int)self.game.redColor.score]];
+                           [score setText:[NSString stringWithFormat:@"Score: %d",(int)self.game.redColor.score]];
                            UILabel *email = (UILabel *)[self.view viewWithTag:203];
-                           [email setText:[NSString stringWithFormat:@"%@@notvalid.email",self.game.redColor.userID]];
+                           [email setText:self.game.redColor.email];
                            
-                           [status setHidden:NO];
                            [score setHidden:NO];
                            [email setHidden:NO];
                            UIImageView *image = (UIImageView *)[self.view viewWithTag:210];
                            [image setHidden:NO];
+                           UIImageView *imageStatus = (UIImageView *)[self.view viewWithTag:211];
+                           switch (self.game.redColor.state) {
+                               case 0:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_yellow.png"]];
+                                   break;
+                               case 1:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 2:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 3:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_green.png"]];
+                                   break;
+                               default:
+                                   break;
+                           }
                            
                            [self.view setNeedsDisplay];
                        });
@@ -209,18 +244,32 @@
         }
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           UILabel *status = (UILabel *)[self.view viewWithTag:301];
-                           [status setText:[NSString stringWithFormat:@"%d",(int)self.game.greenColor.state]];
                            UILabel *score = (UILabel *)[self.view viewWithTag:302];
-                           [score setText:[NSString stringWithFormat:@"%d",(int)self.game.greenColor.score]];
+                           [score setText:[NSString stringWithFormat:@"Score: %d",(int)self.game.greenColor.score]];
                            UILabel *email = (UILabel *)[self.view viewWithTag:303];
-                           [email setText:[NSString stringWithFormat:@"%@@notvalid.email",self.game.greenColor.userID]];
+                           [email setText:self.game.greenColor.email];
                            
-                           [status setHidden:NO];
                            [score setHidden:NO];
                            [email setHidden:NO];
                            UIImageView *image = (UIImageView *)[self.view viewWithTag:310];
                            [image setHidden:NO];
+                           UIImageView *imageStatus = (UIImageView *)[self.view viewWithTag:311];
+                           switch (self.game.greenColor.state) {
+                               case 0:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_yellow.png"]];
+                                   break;
+                               case 1:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 2:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 3:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_green.png"]];
+                                   break;
+                               default:
+                                   break;
+                           }
                            
                            [self.view setNeedsDisplay];
                        });
@@ -231,18 +280,34 @@
         }
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           UILabel *status = (UILabel *)[self.view viewWithTag:401];
-                           [status setText:[NSString stringWithFormat:@"%d",(int)self.game.blueColor.state]];
                            UILabel *score = (UILabel *)[self.view viewWithTag:402];
-                           [score setText:[NSString stringWithFormat:@"%d",(int)self.game.blueColor.score]];
+                           [score setText:[NSString stringWithFormat:@"Score: %d",(int)self.game.blueColor.score]];
                            UILabel *email = (UILabel *)[self.view viewWithTag:403];
-                           [email setText:[NSString stringWithFormat:@"%@@notvalid.email",self.game.blueColor.userID]];
+                           [email setText:self.game.blueColor.email];
                            
-                           [status setHidden:NO];
                            [score setHidden:NO];
                            [email setHidden:NO];
                            UIImageView *image = (UIImageView *)[self.view viewWithTag:410];
                            [image setHidden:NO];
+                           
+                           //
+                           UIImageView *imageStatus = (UIImageView *)[self.view viewWithTag:411];
+                           switch (self.game.blueColor.state) {
+                               case 0:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_yellow.png"]];
+                                   break;
+                               case 1:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 2:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_red.png"]];
+                                   break;
+                               case 3:
+                                   [imageStatus setImage:[UIImage imageNamed:@"status_green.png"]];
+                                   break;
+                               default:
+                                   break;
+                           }
                            
                            [self.view setNeedsDisplay];
                        });
@@ -264,6 +329,26 @@
                        } else if (me.state == 3) {
                            self.title = @"Waiting for other player";
                        }
+                       
+                       if (me.state != 0) {
+                           NSInteger i = (me.y*8+me.x);
+                           if ([me isEqual:self.game.yellowColor]) {
+                               [[self.gameView.board objectAtIndex:i] setState:5];
+                               [[self.gameView.board objectAtIndex:i] update];
+                           }
+                           if ([me isEqual:self.game.redColor]) {
+                               [[self.gameView.board objectAtIndex:i] setState:6];
+                               [[self.gameView.board objectAtIndex:i] update];
+                           }
+                           if ([me isEqual:self.game.greenColor]) {
+                               [[self.gameView.board objectAtIndex:i] setState:7];
+                               [[self.gameView.board objectAtIndex:i] update];
+                           }
+                           if ([me isEqual:self.game.blueColor]) {
+                               [[self.gameView.board objectAtIndex:i] setState:8];
+                               [[self.gameView.board objectAtIndex:i] update];
+                           }
+                       }
                    });
     
 }
@@ -273,19 +358,23 @@
     //Checks For Approval
     if (buttonIndex == 1) {
         //do something because they selected button one, yes
-        NSLog(@"1get da question");
         QBDataManager *dm = [QBDataManager sharedManager];
         QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
         cm.questionDelegate = self;
         [cm getQuestionWithToken:dm.token gameId:self.gameID];
     } else {
         //do nothing because they selected no
-        NSLog(@"katt");
         dispatch_async(dispatch_get_main_queue(),
                        ^{
                            [self.navigationController popViewControllerAnimated:YES];
                        });
     }
+}
+
+- (IBAction)reloadGame:(id)sender
+{
+    NSLog(@"reload game");
+    [self fetchGame];
 }
 
 - (void)getGameFailed

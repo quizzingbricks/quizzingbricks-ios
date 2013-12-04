@@ -9,6 +9,20 @@
 /* Begin PBXBuildFile section */
 		D400B06E18213EAD00423568 /* QBDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D400B06D18213EAD00423568 /* QBDataManager.m */; };
 		D40C5C54182A44460082BA32 /* QBCreateGameSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */; };
+		D4102E54184F78800009E105 /* status_green.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E4E184F78800009E105 /* status_green.png */; };
+		D4102E55184F78800009E105 /* status_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E4F184F78800009E105 /* status_green@2x.png */; };
+		D4102E56184F78800009E105 /* status_red.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E50184F78800009E105 /* status_red.png */; };
+		D4102E57184F78800009E105 /* status_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E51184F78800009E105 /* status_red@2x.png */; };
+		D4102E58184F78800009E105 /* status_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E52184F78800009E105 /* status_yellow.png */; };
+		D4102E59184F78800009E105 /* status_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E53184F78800009E105 /* status_yellow@2x.png */; };
+		D4102E62184F85220009E105 /* BoardCellBluePending.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5A184F85220009E105 /* BoardCellBluePending.png */; };
+		D4102E63184F85220009E105 /* BoardCellBluePending@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5B184F85220009E105 /* BoardCellBluePending@2x.png */; };
+		D4102E64184F85220009E105 /* BoardCellGreenPending.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5C184F85220009E105 /* BoardCellGreenPending.png */; };
+		D4102E65184F85220009E105 /* BoardCellGreenPending@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5D184F85220009E105 /* BoardCellGreenPending@2x.png */; };
+		D4102E66184F85220009E105 /* BoardCellRedPending.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5E184F85220009E105 /* BoardCellRedPending.png */; };
+		D4102E67184F85220009E105 /* BoardCellRedPending@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E5F184F85220009E105 /* BoardCellRedPending@2x.png */; };
+		D4102E68184F85220009E105 /* BoardCellYellowPending@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E60184F85220009E105 /* BoardCellYellowPending@2x.png */; };
+		D4102E6B184F85360009E105 /* BoardCellYellowPending.png in Resources */ = {isa = PBXBuildFile; fileRef = D4102E6A184F85360009E105 /* BoardCellYellowPending.png */; };
 		D41FB6B4184DD65C00535C77 /* QBQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D41FB6B3184DD65C00535C77 /* QBQuestionViewController.m */; };
 		D41FB6B7184DDE4600535C77 /* QBQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = D41FB6B6184DDE4600535C77 /* QBQuestion.m */; };
 		D41FB6BA184E095B00535C77 /* QBGamer.m in Sources */ = {isa = PBXBuildFile; fileRef = D41FB6B9184E095B00535C77 /* QBGamer.m */; };
@@ -68,6 +82,20 @@
 		D400B06D18213EAD00423568 /* QBDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBDataManager.m; sourceTree = "<group>"; };
 		D40C5C52182A44460082BA32 /* QBCreateGameSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBCreateGameSizeViewController.h; sourceTree = "<group>"; };
 		D40C5C53182A44460082BA32 /* QBCreateGameSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBCreateGameSizeViewController.m; sourceTree = "<group>"; };
+		D4102E4E184F78800009E105 /* status_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = status_green.png; sourceTree = "<group>"; };
+		D4102E4F184F78800009E105 /* status_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status_green@2x.png"; sourceTree = "<group>"; };
+		D4102E50184F78800009E105 /* status_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = status_red.png; sourceTree = "<group>"; };
+		D4102E51184F78800009E105 /* status_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status_red@2x.png"; sourceTree = "<group>"; };
+		D4102E52184F78800009E105 /* status_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = status_yellow.png; sourceTree = "<group>"; };
+		D4102E53184F78800009E105 /* status_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "status_yellow@2x.png"; sourceTree = "<group>"; };
+		D4102E5A184F85220009E105 /* BoardCellBluePending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellBluePending.png; sourceTree = "<group>"; };
+		D4102E5B184F85220009E105 /* BoardCellBluePending@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellBluePending@2x.png"; sourceTree = "<group>"; };
+		D4102E5C184F85220009E105 /* BoardCellGreenPending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellGreenPending.png; sourceTree = "<group>"; };
+		D4102E5D184F85220009E105 /* BoardCellGreenPending@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellGreenPending@2x.png"; sourceTree = "<group>"; };
+		D4102E5E184F85220009E105 /* BoardCellRedPending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellRedPending.png; sourceTree = "<group>"; };
+		D4102E5F184F85220009E105 /* BoardCellRedPending@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellRedPending@2x.png"; sourceTree = "<group>"; };
+		D4102E60184F85220009E105 /* BoardCellYellowPending@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BoardCellYellowPending@2x.png"; sourceTree = "<group>"; };
+		D4102E6A184F85360009E105 /* BoardCellYellowPending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoardCellYellowPending.png; sourceTree = "<group>"; };
 		D41FB6B2184DD65C00535C77 /* QBQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBQuestionViewController.h; sourceTree = "<group>"; };
 		D41FB6B3184DD65C00535C77 /* QBQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBQuestionViewController.m; sourceTree = "<group>"; };
 		D41FB6B5184DDE4600535C77 /* QBQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBQuestion.h; sourceTree = "<group>"; };
@@ -276,6 +304,20 @@
 		D4E62CEB18034754002F0CDA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D4102E5A184F85220009E105 /* BoardCellBluePending.png */,
+				D4102E5B184F85220009E105 /* BoardCellBluePending@2x.png */,
+				D4102E5C184F85220009E105 /* BoardCellGreenPending.png */,
+				D4102E5D184F85220009E105 /* BoardCellGreenPending@2x.png */,
+				D4102E5E184F85220009E105 /* BoardCellRedPending.png */,
+				D4102E5F184F85220009E105 /* BoardCellRedPending@2x.png */,
+				D4102E6A184F85360009E105 /* BoardCellYellowPending.png */,
+				D4102E60184F85220009E105 /* BoardCellYellowPending@2x.png */,
+				D4102E4E184F78800009E105 /* status_green.png */,
+				D4102E4F184F78800009E105 /* status_green@2x.png */,
+				D4102E50184F78800009E105 /* status_red.png */,
+				D4102E51184F78800009E105 /* status_red@2x.png */,
+				D4102E52184F78800009E105 /* status_yellow.png */,
+				D4102E53184F78800009E105 /* status_yellow@2x.png */,
 				D4CD4379180699C500E4FEBF /* BoardCellBlue.png */,
 				D4CD437A180699C500E4FEBF /* BoardCellBlue@2x.png */,
 				D4CD437B180699C500E4FEBF /* BoardCellEmpty.png */,
@@ -369,17 +411,31 @@
 			files = (
 				D4CD438A180699C600E4FEBF /* BoardCellRed@2x.png in Resources */,
 				D4CD4385180699C500E4FEBF /* BoardCellEmpty.png in Resources */,
+				D4102E66184F85220009E105 /* BoardCellRedPending.png in Resources */,
+				D4102E57184F78800009E105 /* status_red@2x.png in Resources */,
+				D4102E63184F85220009E105 /* BoardCellBluePending@2x.png in Resources */,
 				D4CD4383180699C500E4FEBF /* BoardCellBlue.png in Resources */,
+				D4102E62184F85220009E105 /* BoardCellBluePending.png in Resources */,
+				D4102E68184F85220009E105 /* BoardCellYellowPending@2x.png in Resources */,
+				D4102E67184F85220009E105 /* BoardCellRedPending@2x.png in Resources */,
+				D4102E55184F78800009E105 /* status_green@2x.png in Resources */,
 				D4CD4389180699C500E4FEBF /* BoardCellRed.png in Resources */,
+				D4102E6B184F85360009E105 /* BoardCellYellowPending.png in Resources */,
 				D4CD4388180699C500E4FEBF /* BoardCellGreen@2x.png in Resources */,
 				D46CF4B317ECB333000BDD43 /* Images.xcassets in Resources */,
 				D4CD438B180699C600E4FEBF /* BoardCellYellow.png in Resources */,
+				D4102E58184F78800009E105 /* status_yellow.png in Resources */,
+				D4102E64184F85220009E105 /* BoardCellGreenPending.png in Resources */,
 				D46CF4A517ECB333000BDD43 /* InfoPlist.strings in Resources */,
 				D46CF4AE17ECB333000BDD43 /* Main.storyboard in Resources */,
 				D4CD438C180699C600E4FEBF /* BoardCellYellow@2x.png in Resources */,
 				D4CD4384180699C500E4FEBF /* BoardCellBlue@2x.png in Resources */,
+				D4102E65184F85220009E105 /* BoardCellGreenPending@2x.png in Resources */,
+				D4102E59184F78800009E105 /* status_yellow@2x.png in Resources */,
 				D4CD4387180699C500E4FEBF /* BoardCellGreen.png in Resources */,
 				D4CD4386180699C500E4FEBF /* BoardCellEmpty@2x.png in Resources */,
+				D4102E54184F78800009E105 /* status_green.png in Resources */,
+				D4102E56184F78800009E105 /* status_red.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
