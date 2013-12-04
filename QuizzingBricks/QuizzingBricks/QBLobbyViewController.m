@@ -88,6 +88,10 @@
 
 - (void)getLobbyFailed{
     NSLog(@"getLobby failed");
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self.navigationController popViewControllerAnimated:YES];
+                   });
 }
 
 - (void)createdLobby:(QBLobby *)l{
