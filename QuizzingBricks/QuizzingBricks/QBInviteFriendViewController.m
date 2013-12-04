@@ -110,7 +110,7 @@
     
     // Configure the cell...
     QBFriend *friend = [self.friends objectAtIndex:indexPath.row];
-    NSString *text = [NSString stringWithFormat:@"%@ - %@",[friend userID],[friend email]];
+    NSString *text = [NSString stringWithFormat:@"%@",[friend email]];
     [cell.textLabel setText:text];
     NSLog(@"inlobby: %@", self.inLobby);
     NSLog(@"invitation: %@", self.invitation);
