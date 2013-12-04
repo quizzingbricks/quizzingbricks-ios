@@ -98,9 +98,10 @@
                    });
     */
     
-    NSLog(@"Meny: createdLobby lobbySize:%ld",(long)l.size);
+    NSLog(@"Meny: createdLobby lobbySize:%ld id:%@",(long)l.size, l.lobbyID);
     QBLobbyViewController *lobbyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LobbyViewController"];
     lobbyVC.lobby = l;
+    lobbyVC.lobbyID = l.lobbyID;
     dispatch_async(dispatch_get_main_queue(),
                    ^{
                        [self.navigationController pushViewController:lobbyVC animated:YES];
@@ -150,6 +151,14 @@
 }
 
 #pragma mark - Table view data source
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 1) {
+        NSLog(@"Join random");
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 /*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
