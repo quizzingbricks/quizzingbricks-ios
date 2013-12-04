@@ -78,8 +78,16 @@
         cellImage = [UIImage imageNamed: @"BoardCellRed"];
     } else if (_state == 3) {
         cellImage = [UIImage imageNamed: @"BoardCellGreen"];
-    } else {
+    } else if (_state == 4) {
         cellImage = [UIImage imageNamed: @"BoardCellBlue"];
+    } else if (_state == 5) {
+        cellImage = [UIImage imageNamed: @"BoardCellYellowPending"];
+    } else if (_state == 6) {
+        cellImage = [UIImage imageNamed: @"BoardCellRedPending"];
+    } else if (_state == 7) {
+        cellImage = [UIImage imageNamed: @"BoardCellGreenPending"];
+    } else if (_state == 8) {
+        cellImage = [UIImage imageNamed: @"BoardCellBluePending"];
     }
     _imageView = [[UIImageView alloc] initWithImage: cellImage];
     [self addSubview:_imageView];
