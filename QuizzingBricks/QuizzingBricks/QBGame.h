@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSString *gameID;
 @property (nonatomic) NSInteger size;
+@property (nonatomic) NSInteger state;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSArray *players;
 @property (strong, nonatomic) NSArray *board;
@@ -23,6 +24,7 @@
 @property (strong, nonatomic) QBGamer *greenColor;
 @property (strong, nonatomic) QBGamer *blueColor;
 
+- (id)initWithGameID:(NSString *)gameID size:(NSInteger)size state:(NSInteger)state;
 - (id)initWithGameID:(NSString *)gameID board:(NSArray *)board players:(NSArray *)players;
 - (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players;
 - (id)initWithSize:(NSInteger)size gameID:(NSString *)gameID status:(NSString *)status;

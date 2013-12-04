@@ -10,6 +10,17 @@
 
 @implementation QBGame
 
+- (id)initWithGameID:(NSString *)gameID size:(NSInteger)size state:(NSInteger)state
+{
+    self = [super init];
+    if (self) {
+        self.gameID = gameID;
+        self.size = size;
+        self.state = state;
+    }
+    return self;
+}
+
 - (id)initWithGameID:(NSString *)gameID board:(NSArray *)board players:(NSArray *)players
 {
     self = [super init];
