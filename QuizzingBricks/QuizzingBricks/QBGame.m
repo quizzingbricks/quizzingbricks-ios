@@ -14,6 +14,10 @@
 {
     self = [super init];
     if (self) {
+        self.yellowColor = nil;
+        self.redColor = nil;
+        self.greenColor = nil;
+        self.blueColor = nil;
         self.gameID = gameID;
         self.board = board;
         self.players = players;

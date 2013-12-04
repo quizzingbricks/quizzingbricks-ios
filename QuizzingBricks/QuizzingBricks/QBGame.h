@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class QBGamer;
+
 @interface QBGame : NSObject
 
 @property (strong, nonatomic) NSString *gameID;
@@ -15,6 +17,11 @@
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSArray *players;
 @property (strong, nonatomic) NSArray *board;
+
+@property (strong, nonatomic) QBGamer *redColor;
+@property (strong, nonatomic) QBGamer *yellowColor;
+@property (strong, nonatomic) QBGamer *greenColor;
+@property (strong, nonatomic) QBGamer *blueColor;
 
 - (id)initWithGameID:(NSString *)gameID board:(NSArray *)board players:(NSArray *)players;
 - (id)initWithSize:(NSInteger)size status:(NSString *)status players:(NSArray *)players;
