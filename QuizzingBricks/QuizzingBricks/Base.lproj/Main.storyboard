@@ -307,7 +307,7 @@
                                 <rect key="frame" x="75" y="141" width="225" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="E-mail:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zB0-PF-Ncl">
                                 <rect key="frame" x="13" y="144" width="54" height="21"/>
@@ -452,7 +452,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Fill remaining slots with randoms" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PVO-Ml-rHc">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Start game" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PVO-Ml-rHc">
                                             <rect key="frame" x="15" y="0.0" width="290" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -888,7 +888,7 @@
             </objects>
             <point key="canvasLocation" x="2606" y="1584"/>
         </scene>
-        <!--Invite Friend View Controller - Title-->
+        <!--Invite Friend View Controller - Invite friend-->
         <scene sceneID="sem-uW-DD4">
             <objects>
                 <tableViewController id="DZ5-Py-KWJ" customClass="QBInviteFriendViewController" sceneMemberID="viewController">
@@ -920,7 +920,7 @@
                             <outlet property="delegate" destination="DZ5-Py-KWJ" id="GPJ-L7-Ily"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="L1c-7T-ehf">
+                    <navigationItem key="navigationItem" title="Invite friend" id="L1c-7T-ehf">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="sN7-cC-heh">
                             <connections>
                                 <segue destination="Dtj-VY-92E" kind="unwind" unwindAction="inviteCancel:" id="WvP-ut-M95"/>

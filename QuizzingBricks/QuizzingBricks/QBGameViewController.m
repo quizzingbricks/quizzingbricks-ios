@@ -252,7 +252,13 @@
                        if (me.state == 0) {
                            self.title = @"Place Brick!";
                        } else if (me.state == 1) {
-                           self.title = @"Deadlock due to debug!";
+                           self.title = @"Question to answer!";
+                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Question to answer"
+                                                                               message:@"You need to answer a question."
+                                                                              delegate:self
+                                                                     cancelButtonTitle:@"Cancel"
+                                                                     otherButtonTitles:@"Answer now", nil];
+                           [alertView show];
                        } else if (me.state == 2) {
                            self.title = @"Shouldn't happen!";
                        } else if (me.state == 3) {
@@ -260,6 +266,26 @@
                        }
                    });
     
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    //Checks For Approval
+    if (buttonIndex == 1) {
+        //do something because they selected button one, yes
+        NSLog(@"1get da question");
+        QBDataManager *dm = [QBDataManager sharedManager];
+        QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+        cm.questionDelegate = self;
+        [cm getQuestionWithToken:dm.token gameId:self.gameID];
+    } else {
+        //do nothing because they selected no
+        NSLog(@"katt");
+        dispatch_async(dispatch_get_main_queue(),
+                       ^{
+                           [self.navigationController popViewControllerAnimated:YES];
+                       });
+    }
 }
 
 - (void)getGameFailed
