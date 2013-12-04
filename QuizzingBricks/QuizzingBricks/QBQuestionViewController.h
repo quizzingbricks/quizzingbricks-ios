@@ -10,9 +10,16 @@
 
 @class QBQuestion;
 
+@protocol QBAnswerDelegate <NSObject>
+
+- (void)answer:(NSInteger)answer;
+
+@end
+
 @interface QBQuestionViewController : UITableViewController
 
 @property (strong, nonatomic) QBQuestion *question;
 @property (nonatomic) NSInteger answer;
+@property (strong, nonatomic) id <QBAnswerDelegate> delegate;
 
 @end

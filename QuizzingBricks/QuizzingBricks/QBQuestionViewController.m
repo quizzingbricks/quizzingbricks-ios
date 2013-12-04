@@ -7,6 +7,7 @@
 //
 
 #import "QBQuestionViewController.h"
+#import "QBQuestion.h"
 
 @interface QBQuestionViewController ()
 
@@ -77,6 +78,9 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
         // Configure the cell...
+        UILabel *questionLabel = (UILabel *)[cell viewWithTag:200];
+        NSLog(@"question: %@", self.question.question);
+        questionLabel.text = self.question.question;
         
         return cell;
     }
@@ -84,8 +88,29 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    if (indexPath.row == 0) {
+        [cell.textLabel setText:self.question.answer1];
+    } else if (indexPath.row == 1) {
+        [cell.textLabel setText:self.question.answer2];
+    } else if (indexPath.row == 2) {
+        [cell.textLabel setText:self.question.answer3];
+    } else if (indexPath.row == 3) {
+        [cell.textLabel setText:self.question.answer4];
+    }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        [self.delegate answer:indexPath.row+1];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 /*
