@@ -10,12 +10,13 @@
 
 @implementation QBGamer
 
-- (id)initWithUserID:(NSString *)userID score:(NSInteger)score state:(NSInteger)state x:(NSInteger)x y:(NSInteger)y correct:(BOOL)correct
+- (id)initWithUserID:(NSString *)userID email:(NSString *)email score:(NSInteger)score state:(NSInteger)state x:(NSInteger)x y:(NSInteger)y correct:(BOOL)correct
 {
     self = [super init];
     if (self) {
         // Initialization code
         self.userID = userID;
+        self.email = email;
         self.score = score;
         self.state = state;
         self.x = x;

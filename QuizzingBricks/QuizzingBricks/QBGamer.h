@@ -11,12 +11,13 @@
 @interface QBGamer : NSObject
 
 @property (strong, nonatomic) NSString *userID;
+@property (strong, nonatomic) NSString *email;
 @property (nonatomic) BOOL answeredCorrectly;
 @property (nonatomic) NSInteger score;
 @property (nonatomic) NSInteger state;
 @property (nonatomic) NSInteger x;
 @property (nonatomic) NSInteger y;
 
-- (id)initWithUserID:(NSString *)userID score:(NSInteger)score state:(NSInteger)state x:(NSInteger)x y:(NSInteger)y correct:(BOOL)correct;
+- (id)initWithUserID:(NSString *)userID email:(NSString *)email score:(NSInteger)score state:(NSInteger)state x:(NSInteger)x y:(NSInteger)y correct:(BOOL)correct;
 
 @end
