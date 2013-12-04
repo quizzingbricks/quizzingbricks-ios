@@ -620,18 +620,14 @@ NSString *const API_URL = @"130.240.233.81:8000";
     if (localError != nil) {
         [self gamesFailedWithError:localError];
     } else {
-        //NSArray *gs = [parsedObject objectForKey:@"games"];
-        //NSMutableArray *games = [[NSMutableArray alloc] init];
-        //for (NSDictionary *g in gs) {
-        //    NSString *g_id = [g objectForKey:@"g_id"];
-        //    NSLog(@"gID: %@", g_id);
-        //    NSInteger size = [[g objectForKey:@"size"] integerValue];
-        //    NSLog(@"size: %ld", (long)size);
-        //    NSString *status = [g objectForKey:@"status"];
-        //    NSLog(@"status: %@", g_id);
-        //    [games addObject:[[QBGame alloc] initWithSize:size gameID:g_id status:status]];
-        //}
-        NSArray *games = [parsedObject objectForKey:@"games"];
+        NSArray *gs = [parsedObject objectForKey:@"games"];
+        NSMutableArray *games = [[NSMutableArray alloc] init];
+        for (NSDictionary *g in gs) {
+            QBGame *game = [[QBGame alloc] initWithGameID:[g objectForKey:@"id"]
+                                                     size:[[g objectForKey:@"size"] integerValue]
+                                                    state:[[g objectForKey:@"state"] integerValue]];
+            [games addObject:game];
+        }
         [self.gameDelegate games:games];
     }
 }
@@ -670,6 +666,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
         NSMutableArray *players = [[NSMutableArray alloc] init];
         for (NSDictionary *jsonPlayer in jsonPlayers) {
             QBGamer *gamer = [[QBGamer alloc] initWithUserID:[jsonPlayer objectForKey:@"userId"]
+                                                       email:[jsonPlayer objectForKey:@"email"]
                                                        score:[[jsonPlayer objectForKey:@"score"] integerValue]
                                                        state:[[jsonPlayer objectForKey:@"state"] integerValue]
                                                            x:[[jsonPlayer objectForKey:@"x"] integerValue]
