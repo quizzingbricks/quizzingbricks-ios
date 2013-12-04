@@ -9,8 +9,10 @@
 #import "QBCommunicationManager.h"
 #import "QBLobby.h"
 #import "QBGame.h"
+#import "QBGamer.h"
 #import "QBPlayer.h"
 #import "QBFriend.h"
+#import "QBQuestion.h"
 
 @implementation QBCommunicationManager
 
@@ -72,7 +74,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
     return request;
 }
 
-#pragma mark - Login
+#pragma mark - Register
 
 - (void)registerWithEmail:(NSString *)email password:(NSString *)password
 {
@@ -121,7 +123,7 @@ NSString *const API_URL = @"130.240.233.81:8000";
 - (void)registerFailedWithError:(NSError *)error
 {
     NSLog(@"failed with error: %@",error);
-    [self.loginDelegate loginFailed];
+    [self.registerDelegate registerFailed];
 }
 
 
@@ -618,18 +620,14 @@ NSString *const API_URL = @"130.240.233.81:8000";
     if (localError != nil) {
         [self gamesFailedWithError:localError];
     } else {
-        //NSArray *gs = [parsedObject objectForKey:@"games"];
-        //NSMutableArray *games = [[NSMutableArray alloc] init];
-        //for (NSDictionary *g in gs) {
-        //    NSString *g_id = [g objectForKey:@"g_id"];
-        //    NSLog(@"gID: %@", g_id);
-        //    NSInteger size = [[g objectForKey:@"size"] integerValue];
-        //    NSLog(@"size: %ld", (long)size);
-        //    NSString *status = [g objectForKey:@"status"];
-        //    NSLog(@"status: %@", g_id);
-        //    [games addObject:[[QBGame alloc] initWithSize:size gameID:g_id status:status]];
-        //}
-        NSArray *games = [parsedObject objectForKey:@"games"];
+        NSArray *gs = [parsedObject objectForKey:@"games"];
+        NSMutableArray *games = [[NSMutableArray alloc] init];
+        for (NSDictionary *g in gs) {
+            QBGame *game = [[QBGame alloc] initWithGameID:[g objectForKey:@"id"]
+                                                     size:[[g objectForKey:@"size"] integerValue]
+                                                    state:[[g objectForKey:@"state"] integerValue]];
+            [games addObject:game];
+        }
         [self.gameDelegate games:games];
     }
 }
@@ -664,16 +662,43 @@ NSString *const API_URL = @"130.240.233.81:8000";
     if (localError != nil) {
         [self getGameFailedWithError:localError];
     } else {
-        NSInteger gameSize = [[parsedObject objectForKey:@"size"] integerValue];
-        NSString *gameStatus = [[parsedObject objectForKey:@"status"] stringValue];
         NSArray *jsonPlayers = [parsedObject objectForKey:@"players"];
         NSMutableArray *players = [[NSMutableArray alloc] init];
         for (NSDictionary *jsonPlayer in jsonPlayers) {
-            QBPlayer *player = [[QBPlayer alloc] initWithUserID:[jsonPlayer objectForKey:@"u_id"] email:[jsonPlayer objectForKey:@"u_mail"]];
-            [players addObject:player];
+            QBGamer *gamer = [[QBGamer alloc] initWithUserID:[jsonPlayer objectForKey:@"userId"]
+                                                       email:[jsonPlayer objectForKey:@"email"]
+                                                       score:[[jsonPlayer objectForKey:@"score"] integerValue]
+                                                       state:[[jsonPlayer objectForKey:@"state"] integerValue]
+                                                           x:[[jsonPlayer objectForKey:@"x"] integerValue]
+                                                           y:[[jsonPlayer objectForKey:@"y"] integerValue]
+                                                     correct:[[jsonPlayer objectForKey:@"answeredCorrectly"] boolValue]];
+            [players addObject:gamer];
         }
-        //QBLobby *lobby = [[QBLobby alloc] initWithSize:lobbySize isOwner:isOwner players:players];
-        QBGame *game = [[QBGame alloc] initWithSize:gameSize status:gameStatus players:players];
+        
+        QBGame *game = [[QBGame alloc] initWithGameID:[parsedObject objectForKey:@"gameId"]
+                                                board:[parsedObject objectForKey:@"board"]
+                                              players:players];
+        int i = 0;
+        for (QBGamer *g in players) {
+            switch (i) {
+                case 0:
+                    game.redColor = g;
+                    break;
+                case 1:
+                    game.yellowColor = g;
+                    break;
+                case 2:
+                    game.greenColor = g;
+                    break;
+                case 3:
+                    game.blueColor = g;
+                    break;
+                    
+                default:
+                    break;
+            }
+            i++;
+        }
         [self.gameDelegate game:game];
     }
 }
@@ -731,6 +756,100 @@ NSString *const API_URL = @"130.240.233.81:8000";
 {
     [self.playDelegate playMoveFailed];
 }
+
+#pragma mark - Question
+
+- (void)getQuestionWithToken:(NSString *)token gameId:(NSString *)g_id
+{
+    NSLog(@"getQuestionWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:@"" endpoint:[NSString stringWithFormat:@"/api/games/%@/play/question/",g_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self getQuestionFailedWithError:error];
+        } else {
+            [self receivedQuestionJSON:data];
+        }
+    }];
+}
+
+- (void)receivedQuestionJSON:(NSData *)objectNotation
+{
+    NSLog(@"receivedQuestionJSON");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+    if (localError != nil) {
+        [self getQuestionFailedWithError:localError];
+    } else {
+        NSArray *jsonAlternatives = [parsedObject objectForKey:@"alternatives"];
+        QBQuestion *question = [[QBQuestion alloc] initWithQuestion:[parsedObject objectForKey:@"question"]
+                                                            answer1:[jsonAlternatives objectAtIndex:0]
+                                                            answer2:[jsonAlternatives objectAtIndex:1]
+                                                            answer3:[jsonAlternatives objectAtIndex:2]
+                                                            answer4:[jsonAlternatives objectAtIndex:3]];
+        [self.questionDelegate receivedQuestion:question];
+    }
+}
+
+- (void)getQuestionFailedWithError:(NSError *)error
+{
+    [self.questionDelegate questionFailed];
+}
+
+#pragma mark - Answer
+
+- (void)sendAnswerWithToken:(NSString *)token gameId:(NSString *)g_id answer:(NSInteger)answer
+{
+    NSLog(@"sendAnswerWithToken");
+    NSMutableURLRequest *request = [self createRequestWithPost:[NSString stringWithFormat:@"answer=%d",(int)answer] endpoint:[NSString stringWithFormat:@"/api/games/%@/play/answer/",g_id] token:token];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            [self answerFailedWithError:error];
+        } else {
+            [self answerResponse:data];
+        }
+    }];
+}
+
+- (void)answerResponse:(NSData *)objectNotation
+{
+    NSLog(@"playMoveResponse");
+    NSString *dataString = [[NSString alloc] initWithData:objectNotation encoding:NSASCIIStringEncoding];
+    NSLog(@"data: %@",dataString);
+    NSError *localError = nil;
+    if ([dataString isEqualToString:@"OK"]||[dataString isEqualToString:@""]) {
+        NSLog(@"answerResponse returned OK");
+        [self.questionDelegate answerSucceded];
+    } else {
+        NSLog(@"answerResponse DID NOT return OK");
+        NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:objectNotation options:0 error:&localError];
+        if (localError != nil) {
+            [self answerFailedWithError:localError];
+        } else {
+            NSLog(@"answerResponse else");
+            if ([[parsedObject allKeys] containsObject:@"errors"]) {
+                NSLog(@"answerResponse failed with error: %@",[parsedObject objectForKey:@"errors"]);
+                [self.questionDelegate answerFailed];
+            } else {
+                NSLog(@"answerResponse failed but no errors");
+                if ([parsedObject objectForKey:@"isCorrect"]) {
+                    [self.questionDelegate answerSucceded];
+                } else if ([parsedObject objectForKey:@"isCorrect"]) {
+                    [self.questionDelegate answerSucceded];
+                }
+            }
+        }
+    }
+}
+
+- (void)answerFailedWithError:(NSError *)error
+{
+    [self.questionDelegate answerFailed];
+}
+
 
 #pragma mark - Me
 - (void)getMeWithToken:(NSString *)token{

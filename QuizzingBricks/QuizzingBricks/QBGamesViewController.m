@@ -197,9 +197,9 @@
         // Configure the cell...;
         QBLobby *lobby = [self.lobbies objectAtIndex:indexPath.row];
         if (lobby.isOwner) {
-            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby - Owner %@",[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
+            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby - Owner %@",@""]];//[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
         } else {
-            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby %@",[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
+            [cell.textLabel setText:[NSString stringWithFormat:@"Game Lobby %@",@""]];//[[self.lobbies objectAtIndex:indexPath.row] lobbyID]]];
         }
         if (lobby.size == 2) {
             [cell.detailTextLabel setText:@"Two Player"];
@@ -213,7 +213,37 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    [cell.textLabel setText:[NSString stringWithFormat:@"%@", [self.games objectAtIndex:indexPath.row]]];
+    //[cell.textLabel setText:@""];
+    QBGame *game = [self.games objectAtIndex:indexPath.row];
+    if (game.size == 2) {
+        if (game.state == 0) {
+            [cell.textLabel setText:@"You can place brick"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Two player - Ongoing game"]];
+        } else if (game.state == 1) {
+            [cell.textLabel setText:@"You can answer question"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Two player - Ongoing game"]];
+        } else if (game.state == 2){
+            [cell.textLabel setText:@"You can answer question"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Two player - Ongoing game"]];
+        } else {
+            [cell.textLabel setText:@"Waiting for other player"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Two player - Ongoing game"]];
+        }
+    } else {
+        if (game.state == 0) {
+            [cell.textLabel setText:@"You can place brick"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Four player - Ongoing game"]];
+        } else if (game.state == 1) {
+            [cell.textLabel setText:@"You can answer question"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Four player - Ongoing game"]];
+        } else if (game.state == 2){
+            [cell.textLabel setText:@"You can answer question"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Four player - Ongoing game"]];
+        } else {
+            [cell.textLabel setText:@"Waiting for other player"];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"Four player - Ongoing game"]];
+        }
+    }
     
     return cell;
 }
@@ -271,7 +301,8 @@
         lvc.lobbyID = [[self.lobbies objectAtIndex:[self.tableView indexPathForSelectedRow].row] lobbyID];
     } else if ([[segue identifier] isEqualToString:@"ViewGameSegue"]) {
         QBGameViewController *gvc = segue.destinationViewController;
-        gvc.gameID = [self.games objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        QBGame *game =[self.games objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        gvc.gameID = game.gameID;
         
     }
 }

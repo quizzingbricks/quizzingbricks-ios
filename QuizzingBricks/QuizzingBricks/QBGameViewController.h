@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "QBCommunicationManager.h"
+#import "QBQuestionViewController.h"
 #import "QBCellView.h"
 
 @class QBBoardView;
 @class QBGame;
 
-@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBCellDelegate>
+@interface QBGameViewController : UIViewController <UIScrollViewDelegate, QBGameComDelegate, QBPlayDelegate, QBQuestionDelegate, QBCellDelegate, QBAnswerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 @property (weak, nonatomic) QBBoardView *gameView;
@@ -21,5 +22,8 @@
 @property (strong, nonatomic) QBGame *game;
 
 //@property (weak, nonatomic) IBOutlet UIScrollView *gameScrollView;
+
+- (IBAction)cancel:(UIStoryboardSegue *)segue;
+- (IBAction)reloadGame:(id)sender;
 
 @end

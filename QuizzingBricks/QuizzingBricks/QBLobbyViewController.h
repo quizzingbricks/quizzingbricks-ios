@@ -17,4 +17,6 @@
 @property (strong, nonatomic) NSString *lobbyID;
 @property (nonatomic) BOOL isOwner;
 
+- (IBAction)reloadLobby:(id)sender;
+
 @end
