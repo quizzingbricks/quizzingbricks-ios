@@ -64,6 +64,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)reloadLobby:(id)sender
+{
+    NSLog(@"reload lobby");
+    QBCommunicationManager *cm = [[QBCommunicationManager alloc] init];
+    cm.lobbyDelegate = self;
+    QBDataManager *dm = [QBDataManager sharedManager];
+    [cm getLobbyWithToken:dm.token lobbyId:self.lobbyID];
+}
+
 - (void)lobbies:(NSArray *)lobbyList{
     // Not used
 }
@@ -193,10 +202,10 @@
         static NSString *CellIdentifier = @"NonOwnerCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
-        titleLabel.text = [NSString stringWithFormat:@"%@ You",player.userID];
+        titleLabel.text = [NSString stringWithFormat:@"%@",player.email];
         
         UILabel *emailLabel = (UILabel *)[cell viewWithTag:101];
-        emailLabel.text = player.email;
+        emailLabel.text = @"You";//player.email;
         
         if ([player.status isEqualToString:@"accepted"]) {
             [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -217,13 +226,13 @@
     // Configure the cell...
     if ([player.userID integerValue] == [dm.u_id integerValue] ) {
         // Only comes here if we're owner
-        [cell.textLabel setText:[NSString stringWithFormat:@"%@ You",player.userID]];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"You"]];
     } else if (indexPath.row == 0) {
-        [cell.textLabel setText:[NSString stringWithFormat:@"%@ Owner",player.userID]];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"Owner"]];
     } else {
-        [cell.textLabel setText:player.userID];
+        [cell.detailTextLabel setText:@""];
     }
-    [cell.detailTextLabel setText:player.email];
+    [cell.textLabel setText:player.email];
     NSLog(@"player status: %@ %@", player.status, player.email);
     if ([player.status isEqualToString:@"accepted"]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
